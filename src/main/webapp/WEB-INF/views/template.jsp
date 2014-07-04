@@ -66,7 +66,7 @@
 	            <%=contents%>
 	        <%}%>
          <%} else{ %>
-         	기본페이지
+         	<img src='${pageContext.request.contextPath}/resources/img/security_camera.jpg'/>
          <%} %>                  
         </div>
         <!-- /#page-wrapper -->

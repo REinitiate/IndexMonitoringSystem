@@ -12,7 +12,7 @@
 	
 	<div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Information</h1>
+            <h1 class="page-header"> ${idx_nm} 시계열 및 구성 정보</h1>
         </div>
         <!-- /.col-lg-12 -->
     </div>
