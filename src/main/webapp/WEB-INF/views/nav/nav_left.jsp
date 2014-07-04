@@ -59,10 +59,10 @@
                         <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>주식지수<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="flot.html">지수 기초정보 출력</a>
+                                <a href="javascript:action_menu('/stock/constitution')">지수 구성정보</a>
                             </li>
                             <li>
-                                <a href="morris.html">개편 상황</a>
+                                <a href="morris.html">지수 시계열</a>
                             </li>                           
                             <li>
                                 <a href="morris.html">지수별 보유비중</a>

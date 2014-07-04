@@ -30,7 +30,7 @@ public class DashBoardController {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	@RequestMapping(value = "/dashboard")	
+	@RequestMapping(value = "/dashboard")
 	public String home(@RequestParam(required=false) String dt, HttpServletRequest req, Model model) {
 		
 		logger.info("root 경로로 접속했을 시!"); 
