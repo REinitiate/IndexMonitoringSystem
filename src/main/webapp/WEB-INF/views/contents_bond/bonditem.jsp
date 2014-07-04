@@ -57,15 +57,29 @@
 						    				<tr class="danger">
 						    			</c:when>
 						    			<c:otherwise>
-						    				<tr>
+						    				<c:choose>						    					
+						    					<c:when test="${map['편입여부'].equals('편출')}">						    						
+						    						<tr class="warning"">
+						    					</c:when>
+						    					<c:otherwise>
+						    						<tr>
+						    					</c:otherwise>
+						    				</c:choose>
 						    			</c:otherwise>
-						    		</c:choose>						    								    								    		
-						    	
-						    		<c:if test="">			    		
-						    		</c:if>    		
+						    		</c:choose>						    		    		
 						    		<td>${map['채권이름']}</td>    		
 						    		<td>${map['채권코드']}</td>
-						    		<td class="text-right"><fmt:formatNumber value="${map['비중']}" pattern="#.00"/></td>
+						    		
+						    		<c:choose>
+						    			<c:when test="${map['편입여부'].equals('편입')}">
+						    				<td class="text-right"><fmt:formatNumber value="${map['비중']}" pattern="#.00"/></td>
+						    			</c:when>
+						    			<c:otherwise>
+						    				<td class="text-right">편출</td>
+						    			</c:otherwise>
+						    		</c:choose>
+						    		
+						    		
 						    		<td class="text-right"><fmt:formatNumber value="${map['YIELD']}" pattern="#.00"/></td>
 						    		<td class="text-right"><fmt:formatNumber value="${map['평가가격']}" pattern="#.0000"/></td>    		
 						    		<td class="text-right"><fmt:formatNumber value="${map['NAV평가가격']}" pattern="#.0000"/></td>
