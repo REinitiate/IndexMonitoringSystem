@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="BondQueryMapper">
+	
+	<select id="selectBndItemHist" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[SELECT S.BND_ITEM_CD "채권코드", C.EXP_DT "만기일", S.BND_ITEM_NM "채권이름", S.WGT "비중", S.YLD "YIELD", S.EVL_PRC "평가가격", S.EVL_PRC_NAV "NAV평가가격",
+               NVL(S.B_TRD_DT, '할인채') "최근이자지급일", NVL(B.INT_PMNT_AMT, '') "이자"
+          FROM (SELECT A.BND_ITEM_CD,
+                       A.BND_ITEM_NM,
+                       A.WGT,
+                       A.YLD,
+                       A.EVL_PRC,
+                       A.EVL_PRC_NAV,
+                       (SELECT MIN (TRD_DT)
+                          FROM BD_BND_INT_PMNT
+                         WHERE BND_ITEM_CD = A.BND_ITEM_CD AND TRD_DT >= #{trd_dt})
+                          AS B_TRD_DT
+                  FROM VA_BND_IDX_ITEM_HIST A
+                 WHERE A.TRD_DT = #{trd_dt} AND A.IDX_CD = #{idx_cd}) S,
+               BD_BND_INT_PMNT B, FNB_BOND_INFO C
+         WHERE S.BND_ITEM_CD = B.BND_ITEM_CD(+) AND S.B_TRD_DT = B.TRD_DT(+)
+         AND S.BND_ITEM_CD = C.ITEMCD
+         ORDER BY S.WGT DESC]]>
+	</select>	
+	
+	
+		<select id="selectBndIdxTimeSeries" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[SELECT TRD_DT, CLS_PRC
+				FROM VA_BND_IDX_DL A
+				WHERE A.IDX_CD = #{idx_cd}
+				AND A.TRD_DT >= TO_CHAR(ADD_MONTHS(TO_DATE(#{trd_dt}), -12), 'YYYYMMDD')
+				ORDER BY A.TRD_DT ASC]]>
+	</select>
+	
+</mapper>
