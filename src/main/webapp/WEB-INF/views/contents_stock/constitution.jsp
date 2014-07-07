@@ -49,7 +49,7 @@
   					},
   					title:{
   						text : '${idx_nm}'
-  					},
+  					},  					
   					yAxis:[
 						{title: {
 						 text: '총수익 지수'

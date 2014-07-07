@@ -4,6 +4,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
+
+
 
 public class Converter {
 	public static String GetUtc(String dt){
@@ -15,7 +18,8 @@ public class Converter {
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();			
-		}		
-		return Long.toString(cal.getTimeInMillis());
+		}
+		
+		return Long.toString(cal.getTimeInMillis() + 1000*60*60*24);
 	}
 }

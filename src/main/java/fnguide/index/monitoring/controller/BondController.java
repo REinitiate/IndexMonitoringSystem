@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import fnguide.index.monitoring.bond.BondService;
 import fnguide.index.monitoring.utility.Converter;
 import fnguide.index.monitoring.utility.Ut;
 
@@ -65,17 +66,20 @@ public class BondController {
 		}
 		else {
 			input.put("idx_cd", "FBI.KRW.01");
-		}		
+		}
 		List<HashMap<String, Object>> outItemHist = sqlSession.selectList("BondQueryMapper.selectBndItemHist" , input);
 		
-		HashMap<String, String> input2 = new HashMap<String, String>();		
+		
+		HashMap input2 = new HashMap();		
 		input2.put("trd_dt", dt);		
 		if(code.equals("ktb")){
 			input2.put("idx_cd", "FBI.KTB.01.1");			
 		}
 		else {
 			input2.put("idx_cd", "FBI.KRW.01.1");
-		}		
+		}
+		input2.put("interval", -12);
+		
 		List<HashMap<String, Object>> outIdxDl = sqlSession.selectList("BondQueryMapper.selectBndIdxTimeSeries" , input2);
 		ArrayList<String[]> outIdxDl2 = new ArrayList<String[]>();  
 		
@@ -131,15 +135,10 @@ public class BondController {
 	// 채권지수 시계열 가지고 온다.
 	public String GetBndTimeSeriesString(String dt, String cd) {		
 			
-		HashMap<String, String> input = new HashMap<String, String>();		
-		input.put("trd_dt", dt);		
-		if(cd.equals("ktb")){
-			input.put("idx_cd", "FBI.KTB.01.1");			
-		}
-		else {
-			input.put("idx_cd", "FBI.KRW.01.1");
-		}
+		HashMap input = new HashMap();		
+		input.put("trd_dt", dt);
 		input.put("idx_cd", cd); // 일단 처리
+		input.put("interval", -12);
 		List<HashMap<String, Object>> outIdxDl = sqlSession.selectList("BondQueryMapper.selectBndIdxTimeSeries" , input);
 		
 		// 여기에 배열을 담음..

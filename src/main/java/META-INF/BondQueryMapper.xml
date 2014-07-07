@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="selectBndItemHist" parameterType="java.util.HashMap" resultType="java.util.HashMap">
 		<![CDATA[SELECT S.BND_ITEM_CD "채권코드", C.EXP_DT "만기일", S.BND_ITEM_NM "채권이름", S.WGT "비중", S.YLD "YIELD", S.EVL_PRC "평가가격", S.EVL_PRC_NAV "NAV평가가격",
-               NVL(S.B_TRD_DT, '할인채') "최근이자지급일", NVL(B.INT_PMNT_AMT, '') "이자"
+               NVL(S.B_TRD_DT, '할인채') "최근이자지급일", NVL(B.INT_PMNT_AMT, '') "이자", DECODE(S.WGT, 0, '편출', '편입') "편입여부"
           FROM (SELECT A.BND_ITEM_CD,
                        A.BND_ITEM_NM,
                        A.WGT,
@@ -31,7 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<![CDATA[SELECT TRD_DT, CLS_PRC
 				FROM VA_BND_IDX_DL A
 				WHERE A.IDX_CD = #{idx_cd}
-				AND A.TRD_DT >= TO_CHAR(ADD_MONTHS(TO_DATE(#{trd_dt}), -12), 'YYYYMMDD')
+				AND A.TRD_DT >= TO_CHAR(ADD_MONTHS(TO_DATE(#{trd_dt}), #{interval}), 'YYYYMMDD')
 				ORDER BY A.TRD_DT ASC]]>
 	</select>
 	

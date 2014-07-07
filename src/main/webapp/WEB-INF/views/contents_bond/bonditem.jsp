@@ -67,6 +67,7 @@
 						    				</c:choose>
 						    			</c:otherwise>
 						    		</c:choose>						    		    		
+						    		
 						    		<td>${map['채권이름']}</td>    		
 						    		<td>${map['채권코드']}</td>
 						    		
@@ -119,7 +120,6 @@
   
   	$(function(){
   		
-  		
   		$("#chart").highcharts(
   				'StockChart', {
   					chart:{  						
@@ -127,13 +127,25 @@
   					title:{
   						text : '${idx_nm}'
   					},
+  					xAxis:{
+  						type: 'datetime',
+  						labels:{
+  							formatter: function(){
+  								return Highcharts.dateFormat('%Y/%m/%d', this.value);
+  							}
+  						}
+  					},
+  					tooltip:{
+  						xDateFormat: '%Y/%m/%d',
+  						shared: true
+  					},
   					yAxis:[
 						{title: {
 						 text: '총수익 지수'
 						 },  					    
 						 offset: 0
-					}
-  					 ,{
+						}
+  					   ,{
   						title: {
   					        text: '시장 지수'
   					    },  					    
@@ -141,8 +153,8 @@
   					    opposite: true
   					}],
   					series : seriesOptions
-  				});
-  				
+  				}
+  			);
   	});
   	
   	

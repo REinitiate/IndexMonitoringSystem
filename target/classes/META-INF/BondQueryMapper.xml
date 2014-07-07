@@ -25,12 +25,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          AND S.BND_ITEM_CD = C.ITEMCD
          ORDER BY S.WGT DESC]]>
 	</select>	
-		
-	<select id="selectBndIdxTimeSeries" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	
+	
+		<select id="selectBndIdxTimeSeries" parameterType="java.util.HashMap" resultType="java.util.HashMap">
 		<![CDATA[SELECT TRD_DT, CLS_PRC
 				FROM VA_BND_IDX_DL A
 				WHERE A.IDX_CD = #{idx_cd}
-				AND A.TRD_DT >= TO_CHAR(ADD_MONTHS(TO_DATE(#{trd_dt}), -12), 'YYYYMMDD')
+				AND A.TRD_DT >= TO_CHAR(ADD_MONTHS(TO_DATE(#{trd_dt}), #{interval}), 'YYYYMMDD')
 				ORDER BY A.TRD_DT ASC]]>
 	</select>
 	
