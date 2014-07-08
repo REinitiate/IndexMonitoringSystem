@@ -3,29 +3,33 @@ package fnguide.index.monitoring.bond;
 import java.util.HashMap;
 import java.util.List;
 
-import org.mybatis.spring.support.SqlSessionDaoSupport;
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class BondDaoImpl extends SqlSessionDaoSupport implements BondDao {
-
+public class BondDaoImpl implements BondDao {
+	
+	@Autowired
+	private SqlSession sqlSession;
+	
 	@Override
 	public List<HashMap<String, Object>> getBndIdxItem(String trd_dt,
 			String idx_cd) {
 		HashMap<String, String> input = new HashMap<String, String>();		
-		input.put("idx_cd", idx_cd);
-		List<HashMap<String, Object>> outItemHist = getSqlSession().selectList("BondQueryMapper.selectBndItemHist" , input);
+		input.put("idx_cd", idx_cd);		
+		BondMapper bondmapper = sqlSession.getMapper(BondMapper.class);		
+		List<HashMap<String, Object>> outItemHist = bondmapper.selectBndItemHist(trd_dt, idx_cd);  
 		return outItemHist;
 	}
 
 	@Override
-	public List<HashMap<String, Object>> getBndIdxTimeSeries(String trd_dt,
-			Integer interval, String idx_cd) {		
+	public List<HashMap<String, Object>> getBndIdxTimeSeries(String trd_dt, Integer interval, String idx_cd) {	
+		
 		HashMap<String, String> input = new HashMap<String, String>();		
-		input.put("trd_dt", trd_dt);
-		input.put("idx_cd", idx_cd);
-		input.put("interval", interval.toString());
-		List<HashMap<String, Object>> outIdxDl = getSqlSession().selectList("BondQueryMapper.selectBndIdxTimeSeries" , input);
+		input.put("idx_cd", idx_cd);		
+		BondMapper bondmapper = sqlSession.getMapper(BondMapper.class);		
+		List<HashMap<String, Object>> outIdxDl = bondmapper.selectBndIdxTimeSeries(trd_dt, idx_cd, interval);  
 		return outIdxDl;
 	}	
 }

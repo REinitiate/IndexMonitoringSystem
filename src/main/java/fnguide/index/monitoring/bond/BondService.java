@@ -10,6 +10,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import fnguide.index.monitoring.utility.Ut;
@@ -18,12 +19,21 @@ import fnguide.index.monitoring.utility.Ut;
 public class BondService {
 
 	@Autowired
-	private BondDaoImpl dao;
+	private BondDaoImpl bondDaoImpl;
 	
 	public enum IndexType{
 			KTB,
 			CASH
 	};
+	
+	public BondDaoImpl getBondDaoImpl(){
+		return bondDaoImpl;
+	}
+	
+	public void setBondDaoImpl(BondDaoImpl bondDaoImpl){
+		this.bondDaoImpl = bondDaoImpl;
+	}
+	
 	
 	// 채권지수 구성정보 반환
 	public List<HashMap<String, Object>> GetBndIdxItemList(IndexType type, String trd_dt, Integer itvPmt, Integer itvExp){
@@ -35,9 +45,7 @@ public class BondService {
 			idx_cd = "FBI.KTB.01";
 		}
 		
-		dao = new BondDaoImpl();
-		
-		List<HashMap<String, Object>> outItemHist =  dao.getBndIdxItem(trd_dt, idx_cd);
+		List<HashMap<String, Object>> outItemHist =  bondDaoImpl.getBndIdxItem(trd_dt, idx_cd);
 		
 		// dt 부다 일주일 내에 있으면 체크 컬럼명 '경고'
 		Calendar cal = new GregorianCalendar();
@@ -74,6 +82,7 @@ public class BondService {
 	
 	// 채권 시계열 정보 반환
 	public List<HashMap<String, Object>> GetBndIdxTimeSeries(String idx_cd, String trd_dt, Integer interval){
+		BondDaoImpl dao = new BondDaoImpl();
 		return dao.getBndIdxTimeSeries(trd_dt, interval, idx_cd);
 	}
 	

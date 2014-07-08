@@ -90,47 +90,16 @@ public class BondController {
 		}
 		input2.put("interval", -12);
 		
-		List<HashMap<String, Object>> outIdxDl = sqlSession.selectList("BondQueryMapper.selectBndIdxTimeSeries" , input2);
-		ArrayList<String[]> outIdxDl2 = new ArrayList<String[]>();  
+		List<HashMap<String, Object>> outIdxDl = bondService.GetBndIdxTimeSeries("FBI.KTB.01.1", dt, -12);
 		
-		for(int i=0; i<outIdxDl.size(); i++){
-			String[] item = new String[2];
-			item[0] = (String)outIdxDl.get(i).get("TRD_DT");
-			//item[1] = outIdxDl.get(i).get("CLS_PRC");
-			outIdxDl2.add(item);
-		}
-		
-		// dt 부다 일주일 내에 있으면 체크 컬럼명 '경고'
-		Calendar cal = new GregorianCalendar();
-		cal.setTime(Ut.str2date(dt));
-		cal.add(Calendar.DATE, 7);
-		Date t1_upper = cal.getTime();
-		
-		for(int i=0; i<outItemHist.size(); i++){
-			
-			if(((String)outItemHist.get(i).get("최근이자지급일")).compareTo("할인채") != 0){
-				Date exp_dt = Ut.str2date((String)outItemHist.get(i).get("만기일"));
-				Date int_dt = Ut.str2date((String)outItemHist.get(i).get("최근이자지급일"));
-				
-				if(exp_dt.before(t1_upper) || int_dt.before(t1_upper)) {
-					outItemHist.get(i).put("경고", "경고");
-				}
-				else{
-					outItemHist.get(i).put("경고", "없음");
-				}
-			}
-			else{
-				outItemHist.get(i).put("경고", "없음");
-			}
-		}
 				
 		model.addAttribute("type", "url");
 		model.addAttribute("contents", "contents_bond/bonditem.jsp");
 		model.addAttribute("service", "/bond/item");		
 		model.addAttribute("outItemHist", outItemHist);
 				
-		model.addAttribute("timeseries1", GetBndTimeSeriesString(dt, "FBI.KRW.01.1"));
-		model.addAttribute("timeseries2", GetBndTimeSeriesString(dt, "FBI.KRW.01.2"));
+		//model.addAttribute("timeseries1", GetBndTimeSeriesString(dt, "FBI.KRW.01.1"));
+		//model.addAttribute("timeseries2", GetBndTimeSeriesString(dt, "FBI.KRW.01.2"));
 		
 		if(code.equals("ktb")){
 			model.addAttribute("idx_nm", "국고채 지수");
@@ -141,32 +110,4 @@ public class BondController {
 				
 		return "template";
 	}
-	
-	// 채권지수 시계열 가지고 온다.
-	public String GetBndTimeSeriesString(String dt, String cd) {		
-			
-		HashMap input = new HashMap();		
-		input.put("trd_dt", dt);
-		input.put("idx_cd", cd); // 일단 처리
-		input.put("interval", -12);
-		List<HashMap<String, Object>> outIdxDl = sqlSession.selectList("BondQueryMapper.selectBndIdxTimeSeries" , input);
-		
-		// 여기에 배열을 담음..
-		StringBuilder sb = new StringBuilder();
-		sb.append("[");
-		for(int i=0; i<outIdxDl.size(); i++){
-			sb.append("[");
-			sb.append(Converter.GetUtc(outIdxDl.get(i).get("TRD_DT").toString()));			
-			sb.append(",");			
-			sb.append(outIdxDl.get(i).get("CLS_PRC").toString());
-			sb.append("]");
-			if(i != outIdxDl.size()-1)
-				sb.append(",");
-		}
-		sb.append("]");		
-		return sb.toString();
-	}
-	
-	
-	
 }

@@ -3,9 +3,9 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="BondQueryMapper">
+<mapper namespace="fnguide.index.monitoring.bond.BondMapper">
 	
-	<select id="selectBndItemHist" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	<select id="selectBndItemHist" parameterType="String" resultType="java.util.HashMap">
 		<![CDATA[SELECT S.BND_ITEM_CD "채권코드", C.EXP_DT "만기일", S.BND_ITEM_NM "채권이름", S.WGT "비중", S.YLD "YIELD", S.EVL_PRC "평가가격", S.EVL_PRC_NAV "NAV평가가격",
                NVL(S.B_TRD_DT, '할인채') "최근이자지급일", NVL(B.INT_PMNT_AMT, '') "이자", DECODE(S.WGT, 0, '편출', '편입') "편입여부"
           FROM (SELECT A.BND_ITEM_CD,
@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>	
 	
 	
-		<select id="selectBndIdxTimeSeries" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<select id="selectBndIdxTimeSeries" resultType="java.util.HashMap">
 		<![CDATA[SELECT TRD_DT, CLS_PRC
 				FROM VA_BND_IDX_DL A
 				WHERE A.IDX_CD = #{idx_cd}
