@@ -3,6 +3,9 @@ package fnguide.index.monitoring.bond;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
+@Repository
 public interface BondDao {
 	
 	// 채권 구성정보 로딩

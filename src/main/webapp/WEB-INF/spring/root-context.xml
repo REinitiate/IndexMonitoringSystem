@@ -39,6 +39,13 @@
  
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
         <constructor-arg index="0" ref="sqlSessionFactory"/>
-    </bean>  
+    </bean> 
+    
+    <bean id="bondService" class="fnguide.index.monitoring.bond.BondService">    
+    </bean>
+	
+	<bean id="bondDaoImpl" class="fnguide.index.monitoring.bond.BondDaoImpl">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>			
+    </bean>
 		
 </beans>

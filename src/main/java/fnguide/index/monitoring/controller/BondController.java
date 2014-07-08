@@ -34,6 +34,9 @@ public class BondController {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	@Autowired
+	private BondService bondService;
+	
 	@RequestMapping(value = "/bond/item", method=RequestMethod.POST)	
 	public String BondItem(@RequestParam(required=false) String dt, String cd, HttpServletRequest req, Model model) {
 		
@@ -67,7 +70,14 @@ public class BondController {
 		else {
 			input.put("idx_cd", "FBI.KRW.01");
 		}
-		List<HashMap<String, Object>> outItemHist = sqlSession.selectList("BondQueryMapper.selectBndItemHist" , input);
+		
+		//List<HashMap<String, Object>> outItemHist = sqlSession.selectList("BondQueryMapper.selectBndItemHist" , input);
+		List<HashMap<String, Object>> outItemHist = null;
+		
+		if(code.equals("ktb"))
+			outItemHist = bondService.GetBndIdxItemList(BondService.IndexType.CASH, dt, 3, 3);
+		else if(code.equals("cash"))
+			outItemHist = bondService.GetBndIdxItemList(BondService.IndexType.KTB, dt, 3, 3);
 		
 		
 		HashMap input2 = new HashMap();		

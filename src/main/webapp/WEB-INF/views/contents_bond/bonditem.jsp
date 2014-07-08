@@ -53,13 +53,16 @@
 						    <tbody>    	
 						    	<c:forEach items="${outItemHist}" var="map">
 						    		<c:choose>
-						    			<c:when test="${map['경고'].equals('경고')}">
+						    			<c:when test="${map['이자경고'].equals('경고')}">
 						    				<tr class="danger">
+						    			</c:when>
+						    			<c:when test="${map['만기경고'].equals('경고')}">
+						    				<tr class="info">
 						    			</c:when>
 						    			<c:otherwise>
 						    				<c:choose>						    					
 						    					<c:when test="${map['편입여부'].equals('편출')}">						    						
-						    						<tr class="warning"">
+						    						<tr class="warning">
 						    					</c:when>
 						    					<c:otherwise>
 						    						<tr>
@@ -108,12 +111,12 @@
   
   	var seriesOptions = [];
   	seriesOptions[0] = {
-  			name : '총수익 지수',
+  			name : '시장가격지수',
   			data : ${timeseries1}  			
   	};
   	
   	seriesOptions[1] = {
-	 		name : '시장 지수',	 		
+	 		name : '총수익지수',	 		
 	 		data : ${timeseries2},
 	 		yAxis : 1
   	};
