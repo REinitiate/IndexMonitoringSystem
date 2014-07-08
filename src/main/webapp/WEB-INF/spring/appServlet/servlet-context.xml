@@ -26,6 +26,7 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="fnguide.index.monitoring.controller" />
+	<context:component-scan base-package="fnguide.index.monitoring.bond" />
 	
 	<mvc:default-servlet-handler/>
 			

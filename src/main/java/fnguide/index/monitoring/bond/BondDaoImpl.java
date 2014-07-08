@@ -14,6 +14,7 @@ public class BondDaoImpl extends SqlSessionDaoSupport implements BondDao {
 			String idx_cd) {
 		HashMap<String, String> input = new HashMap<String, String>();		
 		input.put("idx_cd", idx_cd);
+		input.put("trd_dt", trd_dt);
 		List<HashMap<String, Object>> outItemHist = getSqlSession().selectList("BondQueryMapper.selectBndItemHist" , input);
 		return outItemHist;
 	}
@@ -21,10 +22,10 @@ public class BondDaoImpl extends SqlSessionDaoSupport implements BondDao {
 	@Override
 	public List<HashMap<String, Object>> getBndIdxTimeSeries(String trd_dt,
 			Integer interval, String idx_cd) {		
-		HashMap<String, String> input = new HashMap<String, String>();		
+		HashMap input = new HashMap<String, String>();		
 		input.put("trd_dt", trd_dt);
 		input.put("idx_cd", idx_cd);
-		input.put("interval", interval.toString());
+		input.put("interval", interval);
 		List<HashMap<String, Object>> outIdxDl = getSqlSession().selectList("BondQueryMapper.selectBndIdxTimeSeries" , input);
 		return outIdxDl;
 	}	

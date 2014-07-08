@@ -10,26 +10,32 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fnguide.index.monitoring.utility.Converter;
 import fnguide.index.monitoring.utility.Ut;
 
 @Service
 public class BondService {
 	
-	public enum IndexType{
+	public enum IndexName{
 			KTB,
 			CASH
+	};
+	
+	public enum IndexType{
+		PRICE,
+		TOTAL_RETURN
 	};
 	
 	@Autowired
 	private BondDaoImpl dao;
 	
 	// 채권지수 구성정보 반환
-	public List<HashMap<String, Object>> GetBndIdxItemList(IndexType type, String trd_dt){
+	public List<HashMap<String, Object>> GetBndIdxItemList(IndexName type, String trd_dt){
 		String idx_cd = null;
-		if(type == IndexType.CASH){
+		if(type == IndexName.CASH){
 			idx_cd = "FBI.KRW.01";
 		}
-		else if(type == IndexType.KTB){
+		else if(type == IndexName.KTB){
 			idx_cd = "FBI.KTB.01";
 		}
 		
@@ -63,8 +69,44 @@ public class BondService {
 	}
 	
 	// 채권 시계열 정보 반환
-	public List<HashMap<String, Object>> GetBndIdxTimeSeries(String idx_cd, String trd_dt, Integer interval){
+	public List<HashMap<String, Object>> GetBndIdxTimeSeries(IndexName name, IndexType type, String trd_dt, Integer interval){
+		
+		String idx_cd = null;
+		if(name == IndexName.CASH){
+			if(type == IndexType.PRICE)
+				idx_cd = "FBI.KRW.01.1";
+			else if(type == IndexType.TOTAL_RETURN)
+				idx_cd = "FBI.KRW.01.2";
+		}
+		else if(name == IndexName.KTB){
+			if(type == IndexType.PRICE)
+				idx_cd = "FBI.KTB.01.1";
+			else if(type == IndexType.TOTAL_RETURN)
+				idx_cd = "FBI.KTB.01.2";
+		}
+		
 		return dao.getBndIdxTimeSeries(trd_dt, interval, idx_cd);
+	}
+	
+	// 채권지수 시계열 가지고 온다.
+	public String GetBndTimeSeriesJsonString(IndexName name, IndexType type, String trd_dt, Integer interval){ 
+		
+		List<HashMap<String, Object>> outIdxDl = GetBndIdxTimeSeries(name, type, trd_dt, interval);
+		
+		// 여기에 배열을 담음..
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		for(int i=0; i<outIdxDl.size(); i++){
+			sb.append("[");
+			sb.append(Converter.GetUtc(outIdxDl.get(i).get("TRD_DT").toString()));			
+			sb.append(",");			
+			sb.append(outIdxDl.get(i).get("CLS_PRC").toString());
+			sb.append("]");
+			if(i != outIdxDl.size()-1)
+				sb.append(",");
+		}
+		sb.append("]");		
+		return sb.toString();
 	}
 	
 	
