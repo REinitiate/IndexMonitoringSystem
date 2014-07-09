@@ -21,6 +21,5 @@ public class SessionController {
 	public void setdate(@RequestParam String target_dt, HttpServletRequest request) {		
 		logger.info("날짜 세션 설정" + target_dt);
 		request.getSession().setAttribute("targetdt", target_dt);
-		
 	}
 }

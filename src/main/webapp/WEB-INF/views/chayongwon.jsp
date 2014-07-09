@@ -8,6 +8,7 @@
 </head>
 <body>
 <h1>2014/07/08 오후 1시 36분 3.32kg</h1>
+<h2>${str}</h2>
 <h2>잘생긴 아들</h2>
 <img src='${pageContext.request.contextPath}/resources/img/baby.jpg'/>
 <h2>잘생긴 아빠</h2>
