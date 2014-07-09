@@ -16,6 +16,11 @@
         </div>
         <!-- /.col-lg-12 -->
     </div>
+    
+    <div style="margin-bottom: 30px">
+	    <label for="index_search">지수 선택 : </label>
+	    <input id="index_search" type="text" class="typeahead" style='width: 400px'>
+	</div>
           
    	<div class="btn-group">      
 	  <button type="button" class="btn btn-default">FNI_STYLE_UNIV</button>
@@ -23,50 +28,23 @@
 	  <button type="button" class="btn btn-default">RES_J_CAP_HIST</button>
 	  <button type="button" class="btn btn-default">FNI_MFI_U_MAP_HIST</button>
 	</div>
-    
 	
-	    
-  <script type="text/javascript">
-  
-  	var seriesOptions = [];
-  	seriesOptions[0] = {
-  			name : '총수익 지수',
-  			data : ${timeseries1}  			
-  	};
-  	
-  	seriesOptions[1] = {
-	 		name : '시장 지수',	 		
-	 		data : ${timeseries2},
-	 		yAxis : 1
-  	};
-  
-  	$(function(){
-  		
-  		
-  		$("#chart").highcharts(
-  				'StockChart', {
-  					chart:{  						
-  					},
-  					title:{
-  						text : '${idx_nm}'
-  					},  					
-  					yAxis:[
-						{title: {
-						 text: '총수익 지수'
-						 },  					    
-						 offset: 0
-					}
-  					 ,{
-  						title: {
-  					        text: '시장 지수'
-  					    },  					    
-  					    offset: 0,  					    
-  					    opposite: true
-  					}],
-  					series : seriesOptions
-  				});
-  				
-  	});
-  	
-  	
-  </script>
+	<div id='test'></div>
+	
+	<script>
+		$(function(){
+			
+			
+			$.ajax({
+				  url: '/monitoring/stock/ucdlist',
+				  contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				  dataType: "json",
+				  success: function(data){
+					  $('.typeahead').typeahead(data);  
+	              },
+	              error: function(XMLHttpRequest, textStatus, errorThrown) {	            	  
+	                  alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+	               }
+				})
+		});
+	</script>

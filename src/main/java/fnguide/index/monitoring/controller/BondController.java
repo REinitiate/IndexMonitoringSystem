@@ -44,8 +44,17 @@ public class BondController {
 		
 		String code = cd; // 국고채인지, KRW CASH 인지 구분! cash or ktb
 		
+		if(dt != null)
+			if(dt.compareTo("")==0)
+				dt = null;
+		
 		if(dt == null){
 			dt = (String)req.getSession().getAttribute("dt");
+			
+			if(dt != null)
+				if(dt.compareTo("")==0)
+					dt = null;
+			
 			if(dt == null){ // 세션에 없을 시
 				String today = (new SimpleDateFormat("yyyyMMdd")).format(new Date());
 				dt = today;

@@ -47,24 +47,37 @@ public class BondService {
 		cal.add(Calendar.DATE, 7);
 		Date t1_upper = cal.getTime();
 		
-		for(int i=0; i<outItemHist.size(); i++){
-			
-			if(((String)outItemHist.get(i).get("최근이자지급일")).compareTo("할인채") != 0){
+		for(int i=0; i<outItemHist.size(); i++){			
+			if(((String)outItemHist.get(i).get("최근이자지급일")).compareTo("할인채") != 0){				
 				Date exp_dt = Ut.str2date((String)outItemHist.get(i).get("만기일"));
-				Date int_dt = Ut.str2date((String)outItemHist.get(i).get("최근이자지급일"));
-				
-				if(exp_dt.before(t1_upper) || int_dt.before(t1_upper)) {
-					outItemHist.get(i).put("경고", "경고");
+				Date int_dt = Ut.str2date((String)outItemHist.get(i).get("최근이자지급일"));				
+				if(exp_dt.before(t1_upper)) {
+					outItemHist.get(i).put("만기경고", "경고");
 				}
 				else{
-					outItemHist.get(i).put("경고", "없음");
+					outItemHist.get(i).put("만기경고", "없음");
 				}
+				
+				if(int_dt.before(t1_upper)) {
+					outItemHist.get(i).put("이자경고", "경고");
+				}
+				else{
+					outItemHist.get(i).put("이자경고", "없음");
+				}
+				
 			}
 			else{
 				outItemHist.get(i).put("경고", "없음");
 			}
-		}				
-				
+		}
+		
+		for(int i=0; i<outItemHist.size(); i++){
+			if(((String)outItemHist.get(i).get("최근이자지급일")).compareTo("할인채") != 0){
+				outItemHist.get(i).put("최근이자지급일", Converter.Date2Date((String)outItemHist.get(i).get("최근이자지급일"), "/"));
+			}
+			outItemHist.get(i).put("만기일", Converter.Date2Date((String)outItemHist.get(i).get("만기일"), "/"));
+		}
+		
 		return outItemHist;
 	}
 	

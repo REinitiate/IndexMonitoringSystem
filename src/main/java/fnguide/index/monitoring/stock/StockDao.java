@@ -1,5 +1,9 @@
 package fnguide.index.monitoring.stock;
 
-public class StockDao {
+import java.util.HashMap;
+import java.util.List;
 
+public interface StockDao {
+	// 지수 리스트
+	public List<HashMap<String, String>> selectUcdList();
 }

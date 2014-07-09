@@ -31,9 +31,9 @@
     <link href="${pageContext.request.contextPath}/resources/css/plugins/timeline/timeline.css" rel="stylesheet">
 
     <!-- SB Admin CSS - Include with every page -->
-    <link href="${pageContext.request.contextPath}/resources/css/sb-admin.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/sb-admin.css" rel="stylesheet">    
     
-    <script src="${pageContext.request.contextPath}/resources/js/jquery-1.10.2.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/jquery-1.10.2.js"></script>    
     <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>            
     
     <script>
@@ -48,8 +48,6 @@
 		}
 	
 	</script>
-	
-	<script src="js/jquery-1.10.2.js"></script>
 </head>
 <body>	
 
@@ -90,5 +88,6 @@
     
     <script src="${pageContext.request.contextPath}/resources/js/highstock.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/modules/exporting.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/modules/bootstrap3-typeahead.js"></script>
     
     

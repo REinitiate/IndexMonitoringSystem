@@ -6,5 +6,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 <configuration>
 	<mappers>
 		<mapper resource="/META-INF/BondQueryMapper.xml"/>
+		<mapper resource="/META-INF/StockQueryMapper.xml"/>
 	</mappers>
 </configuration>

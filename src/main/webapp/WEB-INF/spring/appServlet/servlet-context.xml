@@ -26,9 +26,23 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="fnguide.index.monitoring.controller" />
-	<context:component-scan base-package="fnguide.index.monitoring.bond" />
+	<context:component-scan base-package="fnguide.index.monitoring" />
 	
 	<mvc:default-servlet-handler/>
+	
+	<beans:bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+        <beans:property name="messageConverters">
+            <beans:list>
+                <beans:bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                    <beans:property name="supportedMediaTypes">
+                        <beans:list>
+                            <beans:value>text/plain;charset=UTF-8</beans:value>
+                        </beans:list>
+                    </beans:property>
+                </beans:bean>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
 			
 </beans:beans>
 

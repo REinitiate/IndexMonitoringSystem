@@ -52,18 +52,19 @@
 						    
 						    <tbody>    	
 						    	<c:forEach items="${outItemHist}" var="map">
-						    		<c:choose>
-						    			<c:when test="${map['경고'].equals('경고')}">
-						    				<tr class="danger">
-						    			</c:when>
+						    		<c:choose>						    			
+						    			<c:when test="${map['이자경고'].equals('경고')}"><tr class="info"></c:when>
 						    			<c:otherwise>
-						    				<c:choose>						    					
-						    					<c:when test="${map['편입여부'].equals('편출')}">						    						
-						    						<tr class="warning"">
-						    					</c:when>
-						    					<c:otherwise>
-						    						<tr>
-						    					</c:otherwise>
+						    				<c:choose>
+						    					<c:when test="${map['만기경고'].equals('경고')}"><tr class="info"></c:when>
+								    			<c:otherwise>
+								    				<c:choose>
+									    				<c:when test="${map['편입여부'].equals('편출')}"><tr class="warning"></c:when>
+									    				<c:otherwise>
+									    					<tr>
+									    				</c:otherwise>
+								    				</c:choose>								    				
+								    			</c:otherwise>
 						    				</c:choose>
 						    			</c:otherwise>
 						    		</c:choose>						    		    		
@@ -97,12 +98,12 @@
 	    	<div class="col-md-12">		    
 			    <h5>모니터링 주안점</h5>
 			    <ul>
-			    	<li>1) 이자락 날짜 체크</li>
+			    	<li>1) 만기 채권 체크</li>
+			    	<li>2) 이자락 날짜 체크</li>
+			    	<li>2) 채권가격 이상치 체크</li>
 			    </ul>
 		    </div>		    
 	    </div>
-	    
-	    ${outBndTimeSeries}
 	    
   <script type="text/javascript">
   
@@ -141,13 +142,13 @@
   					},
   					yAxis:[
 						{title: {
-						 text: '총수익 지수'
+						 text: '시장 지수'
 						 },  					    
 						 offset: 0
 						}
   					   ,{
   						title: {
-  					        text: '시장 지수'
+  					        text: '총수익 지수'
   					    },  					    
   					    offset: 0,  					    
   					    opposite: true
