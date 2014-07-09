@@ -44,4 +44,12 @@ public class HomeController {
 		
 		return "template";
 	}
+		
+	@RequestMapping(value = "/chayongwon", method = RequestMethod.GET)	
+	public String ChaYongWon(HttpServletRequest req, Model model) {
+		
+		logger.info("root 경로로 접속했을 시!");
+		
+		return "chayongwon";
+	}
 }
