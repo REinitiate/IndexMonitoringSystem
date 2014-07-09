@@ -236,7 +236,9 @@
 		</dependency>        
 	</dependencies>
     <build>
-        <plugins>
+    	
+        <plugins>	
+        
             <plugin>
                 <artifactId>maven-eclipse-plugin</artifactId>
                 <version>2.9</version>
@@ -273,15 +275,26 @@
 				</configuration>
 			</plugin>
             
+            <!-- Maven Tomcat Plugin -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.2.1</version>
                 <configuration>
-                	<url>http://localhost</url>
-                    <mainClass>org.test.int1.Main</mainClass>
+                	<url>http://11.4.3.129:8080/manager</url>
+                    <server>TomcatServer</server>
+					<path>/</path>
                 </configuration>
-            </plugin>            
+            </plugin>
+            
+            <!-- Maven compiler plugin -->
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>            
             
         </plugins>
     </build>

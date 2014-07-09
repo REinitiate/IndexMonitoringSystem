@@ -71,16 +71,15 @@ public class BondController {
 			req.getSession().setAttribute("dt", dt);
 		}
 		
-		HashMap<String, String> input = new HashMap<String, String>();		
-		input.put("trd_dt", dt);		
+		List<HashMap<String, Object>> outItemHist = null;
+		
 		if(code.equals("ktb")){
-			input.put("idx_cd", "FBI.KTB.01");
+			outItemHist = bondService.GetBndIdxItemList(BondService.IndexName.KTB, dt);
 		}
 		else {
-			input.put("idx_cd", "FBI.KRW.01");
+			outItemHist = bondService.GetBndIdxItemList(BondService.IndexName.CASH, dt);
 		}
 		
-		List<HashMap<String, Object>> outItemHist = bondService.GetBndIdxItemList(BondService.IndexName.CASH, dt);
 		if(code.equals("ktb")){
 			model.addAttribute("idx_nm", "국고채 지수");
 		}
