@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                BD_BND_INT_PMNT B, FNB_BOND_INFO C
          WHERE S.BND_ITEM_CD = B.BND_ITEM_CD(+) AND S.B_TRD_DT = B.TRD_DT(+)
          AND S.BND_ITEM_CD = C.ITEMCD
-         ORDER BY S.WGT DESC]]>
+         ORDER BY S.WGT DESC, C.EXP_DT ASC]]>
 	</select>	
 	
 	

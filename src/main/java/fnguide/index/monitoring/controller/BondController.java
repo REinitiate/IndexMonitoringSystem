@@ -75,9 +75,13 @@ public class BondController {
 		
 		if(code.equals("ktb")){
 			outItemHist = bondService.GetBndIdxItemList(BondService.IndexName.KTB, dt);
+			model.addAttribute("timeseries1", bondService.GetBndTimeSeriesJsonString(BondService.IndexName.KTB, BondService.IndexType.TOTAL_RETURN, dt, -12));
+			model.addAttribute("timeseries2", bondService.GetBndTimeSeriesJsonString(BondService.IndexName.KTB, BondService.IndexType.PRICE, dt, -12));
 		}
 		else {
 			outItemHist = bondService.GetBndIdxItemList(BondService.IndexName.CASH, dt);
+			model.addAttribute("timeseries1", bondService.GetBndTimeSeriesJsonString(BondService.IndexName.CASH, BondService.IndexType.TOTAL_RETURN, dt, -12));
+			model.addAttribute("timeseries2", bondService.GetBndTimeSeriesJsonString(BondService.IndexName.CASH, BondService.IndexType.PRICE, dt, -12));
 		}
 		
 		if(code.equals("ktb")){
@@ -90,9 +94,9 @@ public class BondController {
 		model.addAttribute("type", "url");
 		model.addAttribute("contents", "contents_bond/bond.jsp");
 		model.addAttribute("service", "/bond/item");		
-		model.addAttribute("outItemHist", outItemHist);		
-		model.addAttribute("timeseries1", bondService.GetBndTimeSeriesJsonString(BondService.IndexName.CASH, BondService.IndexType.PRICE, dt, -12));
-		model.addAttribute("timeseries2", bondService.GetBndTimeSeriesJsonString(BondService.IndexName.CASH, BondService.IndexType.TOTAL_RETURN, dt, -12));
+		model.addAttribute("outItemHist", outItemHist);
+		
+		
 				
 		return "template";
 	}

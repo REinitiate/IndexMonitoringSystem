@@ -34,6 +34,13 @@
 		
 	<dependencies>
 	
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20140107</version>
+		</dependency>
+		
+	
 		<!-- apache commons dbcp -->
 		<dependency>
 			<groupId>commons-dbcp</groupId>
@@ -124,6 +131,11 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
 				
@@ -233,12 +245,12 @@
 			<artifactId>junit</artifactId>
 			<version>4.7</version>
 			<scope>test</scope>
-		</dependency>        
-	</dependencies>
+		</dependency>
+				        
+	</dependencies>	
+	
     <build>
-    	
-        <plugins>	
-        
+        <plugins>
             <plugin>
                 <artifactId>maven-eclipse-plugin</artifactId>
                 <version>2.9</version>

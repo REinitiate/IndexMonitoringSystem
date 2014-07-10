@@ -83,8 +83,8 @@
 						    		
 						    		
 						    		<td class="text-right"><fmt:formatNumber value="${map['YIELD']}" pattern="#.00"/></td>
-						    		<td class="text-right"><fmt:formatNumber value="${map['평가가격']}" pattern="#.0000"/></td>    		
-						    		<td class="text-right"><fmt:formatNumber value="${map['NAV평가가격']}" pattern="#.0000"/></td>
+						    		<td class="text-right"><fmt:formatNumber value="${map['평가가격']}" pattern="#.00"/></td>    		
+						    		<td class="text-right"><fmt:formatNumber value="${map['NAV평가가격']}" pattern="#.00"/></td>
 						    		<td class="text-right">${map['만기일']}</td>
 						    		<td clas0s="text-right">${map['최근이자지급일']}</td>
 						    		<td class="text-right"><fmt:formatNumber value="${map['이자']}" pattern="#.00"/></td>						    		

@@ -15,8 +15,7 @@ public class StockService extends SqlSessionDaoSupport implements StockDao {
 		HashMap<String, String> input = new HashMap<String, String>();
 		result = getSqlSession().selectList("StockQueryMapper.selectUcdList", input);		
 		return result;
-	}
-	
+	}	
 	
 	// 종목 코드 리스트를 String 배열로 반환
 	public String GetUcdListByJson(String type){

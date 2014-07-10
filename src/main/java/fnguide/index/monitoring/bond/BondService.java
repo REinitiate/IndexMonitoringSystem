@@ -1,5 +1,6 @@
 package fnguide.index.monitoring.bond;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -31,6 +32,9 @@ public class BondService {
 	
 	// 채권지수 구성정보 반환
 	public List<HashMap<String, Object>> GetBndIdxItemList(IndexName type, String trd_dt){
+				
+		DecimalFormat df = new DecimalFormat("0.00");
+		
 		String idx_cd = null;
 		if(type == IndexName.CASH){
 			idx_cd = "FBI.KRW.01";
@@ -69,6 +73,8 @@ public class BondService {
 			else{
 				outItemHist.get(i).put("경고", "없음");
 			}
+			outItemHist.get(i).put("평가가격", df.format(outItemHist.get(i).get("평가가격")));
+			outItemHist.get(i).put("NAV평가가격", df.format(outItemHist.get(i).get("NAV평가가격")));
 		}
 		
 		for(int i=0; i<outItemHist.size(); i++){
