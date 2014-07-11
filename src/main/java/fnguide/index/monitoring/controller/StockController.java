@@ -43,7 +43,7 @@ public class StockController {
 	@Autowired
 	public StockConstService stockConstService;
 	
-	@RequestMapping(value = "/stock/constitution", method=RequestMethod.POST)	
+	@RequestMapping(value = "/stock/constitution", method={RequestMethod.GET, RequestMethod.POST})	
 	public String BondItem(@RequestParam(required=false) String dt, String cd, HttpServletRequest req, Model model) {
 				
 		model.addAttribute("type", "url");

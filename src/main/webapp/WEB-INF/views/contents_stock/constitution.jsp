@@ -154,11 +154,14 @@
 					// 테이블 작업
 					var size = data.종목.length;
 					var div = $('#result1');
-					var html = "<thead><th>종목코드</th><th>종목이름</th><th>지수채용주식수</th><th>지수채용시총</th><th>주가</th><th>비중</th></thead>";
+					var html = "<thead><th>종목코드</th><th>종목이름</th><th>상장주식수</th><th>예정주식수</th><th>유동비율</th><th>지수채용주식수</th><th>지수채용시총</th><th>주가</th><th>비중</th></thead>";
 					for(i=0; i<size; i++){
 						html = html + '<tr>';						
 						html = html + '<td>' + data.종목[i].종목코드 + '</td>';
 						html = html + '<td>' + data.종목[i].종목이름 + '</td>';
+						html = html + '<td>' + data.종목[i].상장주식수 + '</td>';
+						html = html + '<td>' + data.종목[i].상장예정주식수 + '</td>';
+						html = html + '<td>' + data.종목[i].유동비율 + '</td>';
 						html = html + '<td align="right">' + data.종목[i].지수채용주식수 + '</td>';
 						html = html + '<td align="right">' + data.종목[i].지수채용시가총액 + '</td>';
 						html = html + '<td align="right">' + data.종목[i].주가 + '</td>';

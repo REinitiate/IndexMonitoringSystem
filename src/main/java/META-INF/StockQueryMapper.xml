@@ -7,17 +7,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectUcdList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
 		<![CDATA[SELECT A.U_CD "종목코드", A.U_NM "종목이름"
 				FROM FNS_U_MAST A
-				WHERE A.USE_YN = 'Y'
-				AND A.U_CD LIKE 'FI0%'
+				WHERE (A.U_CD LIKE 'FI0%' OR A.U_CD LIKE 'S%')
 		]]>
 	</select>
 	
 	
 	<select id="selectConstFromFniMfiClsPrc" parameterType="java.util.HashMap" resultType="java.util.HashMap">
 		<![CDATA[
-			SELECT GICODE "종목코드", ITEMABBRNM "종목이름", INDEX_STK_QTY "지수채용주식수", PRICE "주가", CAP "지수채용시가총액", WE "비중"
+			SELECT GICODE "종목코드", ITEMABBRNM "종목이름", LIST_STK_CNT "상장주식수", STK_QTY_AF "상장예정주식수", FF_RT_BAND "유동비율", INDEX_STK_QTY "지수채용주식수", PRICE "주가", CAP "지수채용시가총액", WE "비중"
 			FROM( 
-			SELECT A.GICODE, D.ITEMABBRNM, A.INDEX_STK_QTY, A.WEIGHT, B.FF_RT_BAND/100, C.CLS_PRC PRICE, A.INDEX_STK_QTY * C.CLS_PRC CAP, A.INDEX_STK_QTY * C.CLS_PRC / SUM(A.INDEX_STK_QTY * C.CLS_PRC) OVER (PARTITION BY 1) WE  
+			SELECT A.GICODE, D.ITEMABBRNM, C.LIST_STK_CNT, C.STK_QTY_AF, A.INDEX_STK_QTY, A.WEIGHT, B.FF_RT_BAND/100 FF_RT_BAND, C.CLS_PRC PRICE, A.INDEX_STK_QTY * C.CLS_PRC CAP, A.INDEX_STK_QTY * C.CLS_PRC / SUM(A.INDEX_STK_QTY * C.CLS_PRC) OVER (PARTITION BY 1) WE  
 			FROM JISUDEV.FNI_MFI_U_MAP_HIST A, FNI_FREE_FLOAT_RT B, FNS_JD C, FNS_J_MAST_HIST D
 			WHERE A.U_CD = #{u_cd}
 			AND A.TRD_DT = #{dt_univ}
@@ -26,17 +25,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AND A.GICODE = C.GICODE
 			AND C.TRD_DT = #{dt_prc}
 			AND A.GICODE = D.GICODE
-			AND D.TRD_DT = C.TRD_DT
-			ORDER BY WE DESC
-			)
+			AND D.TRD_DT = C.TRD_DT                        
+			ORDER BY WE DESC)
 		]]>
 	</select>
 	
 	<select id="selectConstFromFniMfiStdPrc" parameterType="java.util.HashMap" resultType="java.util.HashMap">
 		<![CDATA[
-			SELECT GICODE "종목코드", ITEMABBRNM "종목이름", INDEX_STK_QTY "지수채용주식수", PRICE "주가", CAP "지수채용시가총액", WE "비중"
+			SELECT GICODE "종목코드", ITEMABBRNM "종목이름", LIST_STK_CNT "상장주식수", STK_QTY_AF "상장예정주식수", FF_RT_BAND "유동비율", INDEX_STK_QTY "지수채용주식수", PRICE "주가", CAP "지수채용시가총액", WE "비중"
 			FROM( 
-			SELECT A.GICODE, D.ITEMABBRNM, A.INDEX_STK_QTY, A.WEIGHT, B.FF_RT_BAND/100, C.STD_PRC PRICE, A.INDEX_STK_QTY * C.STD_PRC CAP, A.INDEX_STK_QTY * C.CLS_PRC / SUM(A.INDEX_STK_QTY * C.CLS_PRC) OVER (PARTITION BY 1) WE  
+			SELECT A.GICODE, D.ITEMABBRNM, C.LIST_STK_CNT, C.STK_QTY_AF, A.INDEX_STK_QTY, A.WEIGHT, B.FF_RT_BAND/100 FF_RT_BAND, C.STD_PRC PRICE, A.INDEX_STK_QTY * C.STD_PRC CAP, A.INDEX_STK_QTY * C.STD_PRC / SUM(A.INDEX_STK_QTY * C.STD_PRC) OVER (PARTITION BY 1) WE  
 			FROM JISUDEV.FNI_MFI_U_MAP_HIST A, FNI_FREE_FLOAT_RT B, FNS_JD C, FNS_J_MAST_HIST D
 			WHERE A.U_CD = #{u_cd}
 			AND A.TRD_DT = #{dt_univ}
@@ -45,8 +43,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AND A.GICODE = C.GICODE
 			AND C.TRD_DT = #{dt_prc}
 			AND A.GICODE = D.GICODE
-			AND D.TRD_DT = C.TRD_DT
-			ORDER BY WE DESC
+			AND D.TRD_DT = C.TRD_DT                        
+			ORDER BY WE DESC)
 			)
 		]]>
 	</select>

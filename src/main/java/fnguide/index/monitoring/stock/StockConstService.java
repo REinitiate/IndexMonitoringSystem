@@ -74,6 +74,8 @@ public class StockConstService extends SqlSessionDaoSupport {
 			input.get(i).put("지수채용시가총액", df.format(input.get(i).get("지수채용시가총액")));
 			input.get(i).put("주가", df.format(input.get(i).get("주가")));		
 			input.get(i).put("비중", df2.format(input.get(i).get("비중")));
+			input.get(i).put("상장주식수", df.format(input.get(i).get("상장주식수")));
+			input.get(i).put("상장예정주식수", df.format(input.get(i).get("상장예정주식수")));
 		}
 		
 		return input;	
