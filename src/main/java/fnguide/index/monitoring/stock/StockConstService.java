@@ -26,9 +26,12 @@ public class StockConstService extends SqlSessionDaoSupport {
 		input.put("dt_prc", dt_prc);
 		input.put("dt_univ", dt_univ);
 		
-		List<HashMap<String, Object>> result = null;		
-		result = format(getSqlSession().selectList("StockQueryMapper.selectIndexConstitution", input));		
-		return result;		
+		List<HashMap<String, Object>> result = null;
+		if(prcType == PriceType.CLS_PRC)
+			result = format(getSqlSession().selectList("StockQueryMapper.selectConstFromFniMfiClsPrc", input));
+		else if(prcType == PriceType.STD_PRC)
+			result = format(getSqlSession().selectList("StockQueryMapper.selectConstFromFniMfiStdPrc", input));
+		return result;
 	}
 	
 	public String GetConstitutionInfo2Json(String u_cd, String dt_univ, String dt_prc, PriceType prcType) {
@@ -44,7 +47,20 @@ public class StockConstService extends SqlSessionDaoSupport {
 			objArray.put(i, dbOutput.get(i));
 		}
 		obj.put("종목", objArray);
-				
+		
+		String u_nm = (String) getSqlSession().selectOne("StockQueryMapper.selectUnmWithUcd", u_cd);
+		JSONObject obj2 = new JSONObject();
+		obj2.put("지수코드", u_cd);
+		obj2.put("지수이름", u_nm);
+		obj2.put("종목개수", dbOutput.size());
+		obj2.put("유니브기준일자", dt_univ);
+		obj2.put("주가기준일자", dt_prc);
+		if(prcType == PriceType.CLS_PRC)
+			obj2.put("주가구분", "종가");
+		else if(prcType == PriceType.STD_PRC)
+			obj2.put("주가구분", "기준가");		
+		
+		obj.put("정보", obj2);
 		return obj.toString();		
 	}
 	
@@ -60,8 +76,6 @@ public class StockConstService extends SqlSessionDaoSupport {
 			input.get(i).put("비중", df2.format(input.get(i).get("비중")));
 		}
 		
-		
-		return input;
-	
+		return input;	
 	}
 }

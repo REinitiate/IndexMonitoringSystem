@@ -13,7 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	
-	<select id="selectIndexConstitution" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	<select id="selectConstFromFniMfiClsPrc" parameterType="java.util.HashMap" resultType="java.util.HashMap">
 		<![CDATA[
 			SELECT GICODE "종목코드", ITEMABBRNM "종목이름", INDEX_STK_QTY "지수채용주식수", PRICE "주가", CAP "지수채용시가총액", WE "비중"
 			FROM( 
@@ -29,6 +29,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AND D.TRD_DT = C.TRD_DT
 			ORDER BY WE DESC
 			)
+		]]>
+	</select>
+	
+	<select id="selectConstFromFniMfiStdPrc" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[
+			SELECT GICODE "종목코드", ITEMABBRNM "종목이름", INDEX_STK_QTY "지수채용주식수", PRICE "주가", CAP "지수채용시가총액", WE "비중"
+			FROM( 
+			SELECT A.GICODE, D.ITEMABBRNM, A.INDEX_STK_QTY, A.WEIGHT, B.FF_RT_BAND/100, C.STD_PRC PRICE, A.INDEX_STK_QTY * C.STD_PRC CAP, A.INDEX_STK_QTY * C.CLS_PRC / SUM(A.INDEX_STK_QTY * C.CLS_PRC) OVER (PARTITION BY 1) WE  
+			FROM JISUDEV.FNI_MFI_U_MAP_HIST A, FNI_FREE_FLOAT_RT B, FNS_JD C, FNS_J_MAST_HIST D
+			WHERE A.U_CD = #{u_cd}
+			AND A.TRD_DT = #{dt_univ}
+			AND A.GICODE = B.GICODE
+			AND B.APPL_DT IN (SELECT MAX(APPL_DT) FROM FNI_FREE_FLOAT_RT WHERE GICODE = A.GICODE)
+			AND A.GICODE = C.GICODE
+			AND C.TRD_DT = #{dt_prc}
+			AND A.GICODE = D.GICODE
+			AND D.TRD_DT = C.TRD_DT
+			ORDER BY WE DESC
+			)
+		]]>
+	</select>
+	
+	<select id="selectUnmWithUcd" parameterType="String" resultType="String">
+		<![CDATA[
+			SELECT U_NM "지수이름"
+			FROM FNS_U_MAST
+			WHERE U_CD = #{u_cd}
 		]]>
 	</select>
 	

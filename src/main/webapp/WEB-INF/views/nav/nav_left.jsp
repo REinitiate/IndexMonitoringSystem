@@ -70,6 +70,28 @@
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
+                                        
+                    <li>
+                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>시뮬레이션<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="javascript:action_menu('/stock/constitution')">지수 시계열</a>
+                            </li>
+                            <li>
+                                <a href="morris.html">리턴 프로파일</a>
+                            </li>                           
+                            <li>
+                                <a href="morris.html">리스크 프로파일</a>
+                            </li>
+                            <li>
+                                <a href="morris.html">회전율</a>
+                            </li>
+                            <li>
+                                <a href="morris.html">업종분류</a>
+                            </li>                            
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
                     
                 </ul>
                 <!-- /#side-menu -->
