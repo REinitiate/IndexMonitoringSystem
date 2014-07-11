@@ -44,10 +44,46 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AND C.TRD_DT = #{dt_prc}
 			AND A.GICODE = D.GICODE
 			AND D.TRD_DT = C.TRD_DT                        
-			ORDER BY WE DESC)
-			)
+			ORDER BY WE DESC)			
 		]]>
 	</select>
+	
+	<select id="selectConstFromFniStyleStdPrc" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[
+			SELECT GICODE "종목코드", ITEMABBRNM "종목이름", LIST_STK_CNT "상장주식수", STK_QTY_AF "상장예정주식수", FF_RT_BAND "유동비율", INDEX_STK_QTY "지수채용주식수", PRICE "주가", CAP "지수채용시가총액", WE "비중"
+			FROM( 
+			SELECT A.GICODE, D.ITEMABBRNM, C.LIST_STK_CNT, C.STK_QTY_AF, FLOOR(A.WEIGHT * B.FF_RT_BAND/100 * (C.LIST_STK_CNT + C.STK_QTY_AF)) INDEX_STK_QTY, B.FF_RT_BAND/100 FF_RT_BAND, C.STD_PRC PRICE, FLOOR(A.WEIGHT * B.FF_RT_BAND/100 * (C.LIST_STK_CNT + C.STK_QTY_AF)) * C.STD_PRC CAP, FLOOR(A.WEIGHT * B.FF_RT_BAND/100 * (C.LIST_STK_CNT + C.STK_QTY_AF)) * C.STD_PRC / SUM(FLOOR(A.WEIGHT * B.FF_RT_BAND/100 * (C.LIST_STK_CNT + C.STK_QTY_AF)) * C.STD_PRC) OVER (PARTITION BY 1) WE  
+			FROM FNI_STYLE_UNIV A, FNI_FREE_FLOAT_RT B, FNS_JD C, FNS_J_MAST_HIST D
+			WHERE A.U_CD = #{u_cd}
+			AND A.START_DT = #{dt_univ}
+			AND A.GICODE = B.GICODE
+			AND B.APPL_DT IN (SELECT MAX(APPL_DT) FROM FNI_FREE_FLOAT_RT WHERE GICODE = A.GICODE)
+			AND A.GICODE = C.GICODE
+			AND C.TRD_DT = #{dt_prc}
+			AND A.GICODE = D.GICODE
+			AND D.TRD_DT = C.TRD_DT
+			ORDER BY WE DESC)
+		]]>
+	</select>
+	
+	<select id="selectConstFromFniStyleClsPrc" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[
+			SELECT GICODE "종목코드", ITEMABBRNM "종목이름", LIST_STK_CNT "상장주식수", STK_QTY_AF "상장예정주식수", FF_RT_BAND "유동비율", INDEX_STK_QTY "지수채용주식수", PRICE "주가", CAP "지수채용시가총액", WE "비중"
+			FROM( 
+			SELECT A.GICODE, D.ITEMABBRNM, C.LIST_STK_CNT, C.STK_QTY_AF, FLOOR(A.WEIGHT * B.FF_RT_BAND/100 * (C.LIST_STK_CNT + C.STK_QTY_AF)) INDEX_STK_QTY, B.FF_RT_BAND/100 FF_RT_BAND, C.CLS_PRC PRICE, FLOOR(A.WEIGHT * B.FF_RT_BAND/100 * (C.LIST_STK_CNT + C.STK_QTY_AF)) * C.CLS_PRC CAP, FLOOR(A.WEIGHT * B.FF_RT_BAND/100 * (C.LIST_STK_CNT + C.STK_QTY_AF)) * C.CLS_PRC / SUM(FLOOR(A.WEIGHT * B.FF_RT_BAND/100 * (C.LIST_STK_CNT + C.STK_QTY_AF)) * C.CLS_PRC) OVER (PARTITION BY 1) WE  
+			FROM FNI_STYLE_UNIV A, FNI_FREE_FLOAT_RT B, FNS_JD C, FNS_J_MAST_HIST D
+			WHERE A.U_CD = #{u_cd}
+			AND A.START_DT = #{dt_univ}
+			AND A.GICODE = B.GICODE
+			AND B.APPL_DT IN (SELECT MAX(APPL_DT) FROM FNI_FREE_FLOAT_RT WHERE GICODE = A.GICODE)
+			AND A.GICODE = C.GICODE
+			AND C.TRD_DT = #{dt_prc}
+			AND A.GICODE = D.GICODE
+			AND D.TRD_DT = C.TRD_DT
+			ORDER BY WE DESC)
+		]]>
+	</select>
+		
 	
 	<select id="selectUnmWithUcd" parameterType="String" resultType="String">
 		<![CDATA[

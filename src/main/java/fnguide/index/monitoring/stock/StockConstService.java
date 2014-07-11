@@ -19,7 +19,12 @@ public class StockConstService extends SqlSessionDaoSupport {
 		STD_PRC
 	}
 	
-	public List<HashMap<String, Object>> GetConstitutionInfo(String u_cd, String dt_univ, String dt_prc, PriceType prcType) {
+	public enum UnivType{
+		FNI_MFI_U_MAP_HIST,
+		FNI_STYLE_UNIV
+	}
+	
+	public List<HashMap<String, Object>> GetConstitutionInfo(String u_cd, String dt_univ, String dt_prc, PriceType prcType, UnivType univType) {
 		
 		HashMap<String, Object> input = new HashMap<String, Object>();
 		input.put("u_cd", u_cd);
@@ -27,16 +32,25 @@ public class StockConstService extends SqlSessionDaoSupport {
 		input.put("dt_univ", dt_univ);
 		
 		List<HashMap<String, Object>> result = null;
-		if(prcType == PriceType.CLS_PRC)
-			result = format(getSqlSession().selectList("StockQueryMapper.selectConstFromFniMfiClsPrc", input));
-		else if(prcType == PriceType.STD_PRC)
-			result = format(getSqlSession().selectList("StockQueryMapper.selectConstFromFniMfiStdPrc", input));
+		if(prcType == PriceType.CLS_PRC){
+			if(univType == univType.FNI_MFI_U_MAP_HIST)
+				result = format(getSqlSession().selectList("StockQueryMapper.selectConstFromFniMfiClsPrc", input));
+			else if(univType == univType.FNI_STYLE_UNIV)
+				result = format(getSqlSession().selectList("StockQueryMapper.selectConstFromFniStyleClsPrc", input));
+		}	
+		else if(prcType == PriceType.STD_PRC){
+			if(univType == univType.FNI_MFI_U_MAP_HIST)
+				result = format(getSqlSession().selectList("StockQueryMapper.selectConstFromFniMfiStdPrc", input));
+			else if(univType == univType.FNI_STYLE_UNIV)
+				result = format(getSqlSession().selectList("StockQueryMapper.selectConstFromFniStyleStdPrc", input));
+		}	
+
 		return result;
 	}
 	
-	public String GetConstitutionInfo2Json(String u_cd, String dt_univ, String dt_prc, PriceType prcType) {
+	public String GetConstitutionInfo2Json(String u_cd, String dt_univ, String dt_prc, PriceType prcType, UnivType univType) {
 		
-		List<HashMap<String, Object>> dbOutput = GetConstitutionInfo(u_cd, dt_univ, dt_prc, prcType);
+		List<HashMap<String, Object>> dbOutput = GetConstitutionInfo(u_cd, dt_univ, dt_prc, prcType, univType);
 		
 		for(int i=0; i<dbOutput.size(); i++){			
 		}
