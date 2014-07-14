@@ -71,20 +71,20 @@ public class StockController {
 	
 	@RequestMapping(value = "/stock/constitution/json", method=RequestMethod.POST, produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String GetConstitutionInfo(@RequestParam(required=false) String u_cd, String dt_univ, String dt_prc, String prc_type, String univ_type, HttpServletRequest req, Model model) {		
+	public String GetConstitutionInfo(@RequestParam(required=false) String u_cd, String dt_univ, String dt_prc, String dt_stk, String prc_type, String univ_type, HttpServletRequest req, Model model) {		
 		
 		String result = null;
 		if(prc_type.compareTo("cls_prc") == 0){
 			if(univ_type.compareTo("FNI_STYLE_UNIV") == 0)
-				result = stockConstService.GetConstitutionInfo2Json(u_cd, dt_univ, dt_prc, PriceType.CLS_PRC, UnivType.FNI_STYLE_UNIV);
+				result = stockConstService.GetConstitutionInfo2Json(u_cd, dt_univ, dt_prc, dt_stk, PriceType.CLS_PRC, UnivType.FNI_STYLE_UNIV);
 			else if(univ_type.compareTo("FNI_MFI_U_MAP_HIST") == 0)
-				result = stockConstService.GetConstitutionInfo2Json(u_cd, dt_univ, dt_prc, PriceType.CLS_PRC, UnivType.FNI_MFI_U_MAP_HIST);
+				result = stockConstService.GetConstitutionInfo2Json(u_cd, dt_univ, dt_prc, dt_stk, PriceType.CLS_PRC, UnivType.FNI_MFI_U_MAP_HIST);
 		}
 		else if(prc_type.compareTo("std_prc") == 0){
 			if(univ_type.compareTo("FNI_STYLE_UNIV") == 0)
-				result = stockConstService.GetConstitutionInfo2Json(u_cd, dt_univ, dt_prc, PriceType.STD_PRC, UnivType.FNI_STYLE_UNIV);
+				result = stockConstService.GetConstitutionInfo2Json(u_cd, dt_univ, dt_prc, dt_stk, PriceType.STD_PRC, UnivType.FNI_STYLE_UNIV);
 			else if(univ_type.compareTo("FNI_MFI_U_MAP_HIST") == 0)
-				result = stockConstService.GetConstitutionInfo2Json(u_cd, dt_univ, dt_prc, PriceType.STD_PRC, UnivType.FNI_MFI_U_MAP_HIST);
+				result = stockConstService.GetConstitutionInfo2Json(u_cd, dt_univ, dt_prc, dt_stk, PriceType.STD_PRC, UnivType.FNI_MFI_U_MAP_HIST);
 		}
 		else{
 			try {

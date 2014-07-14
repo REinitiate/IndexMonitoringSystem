@@ -16,11 +16,6 @@
         </div>
         <!-- /.col-lg-12 -->
     
-    
-    <div style="margin-bottom: 10px">
-	    <input type="button" value="테이블 갱신" onclick="refresh_data();"/>
-    </div>
-    
     <!--  인풋 컨트롤 박스 -->
     <div id='input_box_1'>    	
 	    <table class="table">    
@@ -29,34 +24,41 @@
 		    <td><input id="index_search" type="text" class="typeahead" style='width: 300px'></td>
 	    </tr>
 	    <tr>
+		    <td><label for=" dt">주식수기준 날짜 선택 : </label></td>
+		    <td><a><input name="dt" type="text" id="dt_stk" style='width: 300px'></a></td>
+	    </tr>
+	    <tr>
 		    <td><label for=" dt">주가기준 날짜 선택 : </label></td>
 		    <td><a><input name="dt" type="text" id="dt_prc" style='width: 300px'></a></td>
 	    </tr>
 	    <tr>
 		    <td><label for=" dt">유니브기준 날짜 선택 : </label></td>
 		    <td><a><input name="dt" type="text" id="dt_univ" style='width: 300px'></a></td>
-	    </tr>
+	    </tr>	    
 	    <tr>
 	    	<td><label>가격 기준 : </label></td>
 	    	<td>
 	    		<div class="btn-group" style="margin-bottom: 10px">		
 					<button type="button" class="btn btn-default btn_radio_prc">종가기준</button>
 			  		<button type="button" class="btn btn-default btn_radio_prc">기준가기준</button>
-			  		<input id='input_prc_type' type="text" class="btn btn-default"/>
+			  		<input id='input_prc_type' type="text" class="btn btn-info"/>
 				</div>
 			</td>		
 	    </tr>
 	    <tr>
 	    	<td><label>유니버스 테이블 기준 : </label></td>
 	    	<td>
-	    		<div class="btn-group" style="margin-bottom: 10px">		
-					<button type="button" class="btn btn-default btn_radio_univ">FNI_MFI_U_MAP_HIST</button>
-			  		<button type="button" class="btn btn-default btn_radio_univ">FNI_STYLE_UNIV</button>			  		
-			  		<input id='input_univ_type' type="text" class="btn btn-default"/>
+	    		<div class="btn-group" style="margin-bottom: 10px">
+	    			<button type="button" class="btn btn-default btn_radio_univ">FNI_MFI_U_MAP_HIST</button>
+	    			<button type="button" class="btn btn-default btn_radio_univ">FNI_STYLE_UNIV</button>
+			  		<input id='input_univ_type' type="text" class="btn btn-info"/>
 				</div>
 			</td>		
 	    </tr>    
 	    </table>
+	    <div style="margin-bottom: 10px">
+	    	<input type="button" value="테이블 갱신" class="btn btn-success" onclick="refresh_data();"/>
+    	</div>
     </div>    
     <div class="row">
           <div class="col-md-12 col-lg-11">
@@ -82,6 +84,7 @@
 			// 인풋 초기화
 			$('#dt_univ').val('20140709');			
 			$('#dt_prc').val('20140709');
+			$('#dt_stk').val('20140709');
 			$('#index_search').val('FI00(MKF500)');
 			$('#input_prc_type').val('종가기준');
 			$('#input_univ_type').val('FNI_MFI_U_MAP_HIST');
@@ -102,7 +105,7 @@
 		});
 		
 		$(function(){
-        	$('#dt_univ, #dt_prc').datepicker(
+        	$('#dt_univ, #dt_prc, #dt_stk').datepicker(
         				{
 	        				dateFormat: 'yymmdd',
 	        				onSelect: function(){
@@ -136,6 +139,7 @@
 			
 			var input_dt_univ = $('#dt_univ').val();			
 			var input_dt_prc = $('#dt_prc').val();
+			var input_dt_stk = $('#dt_stk').val();
 			var input_index_name = $('#index_search').val().split('(')[0];
 			var input_prc_type = null;
 			var input_univ_type = null;
@@ -159,7 +163,7 @@
 				url: '${pageContext.request.contextPath}/stock/constitution/json',
 				contentType: "application/x-www-form-urlencoded; charset=UTF-8",				
 				dataType: "json",
-				data: {u_cd : input_index_name, dt_univ : input_dt_univ, dt_prc : input_dt_prc, prc_type : input_prc_type, univ_type : input_univ_type},				
+				data: {u_cd : input_index_name, dt_univ : input_dt_univ, dt_prc : input_dt_prc, dt_stk : input_dt_stk, prc_type : input_prc_type, univ_type : input_univ_type},				
 				success: function(data){					
 					// 지수정보 작업
 					var info = '';
@@ -174,7 +178,18 @@
 					// 테이블 작업
 					var size = data.종목.length;
 					var div = $('#result1');
-					var html = "<thead><th>종목코드</th><th>종목이름</th><th>상장주식수</th><th>예정주식수</th><th>유동비율</th><th>지수채용주식수</th><th>지수채용시총</th><th>주가</th><th>비중</th></thead>";
+					
+					var html = '';
+					if(input_univ_type == 'FNI_STYLE_UNIV'){
+						
+					}
+					else if(input_univ_type == 'FNI_MFI_U_MAP_HIST'){
+						
+					}
+					
+					
+					var html = data.헤더;
+					
 					for(i=0; i<size; i++){
 						html = html + '<tr>';						
 						html = html + '<td>' + data.종목[i].종목코드 + '</td>';
@@ -182,6 +197,11 @@
 						html = html + '<td>' + data.종목[i].상장주식수 + '</td>';
 						html = html + '<td>' + data.종목[i].상장예정주식수 + '</td>';
 						html = html + '<td>' + data.종목[i].유동비율 + '</td>';
+						
+						if(input_univ_type == 'FNI_STYLE_UNIV'){
+							html = html + '<td>' + data.종목[i].IIF + '</td>';
+						}
+						
 						html = html + '<td align="right">' + data.종목[i].지수채용주식수 + '</td>';
 						html = html + '<td align="right">' + data.종목[i].지수채용시가총액 + '</td>';
 						html = html + '<td align="right">' + data.종목[i].주가 + '</td>';

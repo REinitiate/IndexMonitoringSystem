@@ -56,7 +56,7 @@
         <jsp:include page="nav/nav_right.jsp"/>  <!--오른쪽 메뉴 -->
         <jsp:include page="nav/nav_left.jsp"/>   <!-- 오른쪽 메뉴 -->
         
-        <div id="page-wrapper">
+        <div id="page-wrapper">        
         <%if(contentsType != null){%>                
 	        <%if(contentsType.compareTo("url") == 0){ %>        
 	            <jsp:include page="<%=contents%>"/>

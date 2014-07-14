@@ -61,32 +61,32 @@
                             <li>
                                 <a href="javascript:action_menu('/stock/constitution')">지수 구성정보</a>
                             </li>
-                            <li>
+                            <li class='disabled'>
                                 <a href="morris.html">지수 시계열</a>
                             </li>                           
-                            <li>
+                            <li class='disabled'>
                                 <a href="morris.html">지수별 보유비중</a>
                             </li>                            
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
                                         
-                    <li>
+                    <li class='disabled'>
                         <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>시뮬레이션<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li>
+                            <li class='disable'>
                                 <a href="javascript:action_menu('/stock/constitution')">지수 시계열</a>
                             </li>
-                            <li>
+                            <li class='disabled'>
                                 <a href="morris.html">리턴 프로파일</a>
                             </li>                           
-                            <li>
+                            <li class='disabled'>
                                 <a href="morris.html">리스크 프로파일</a>
                             </li>
-                            <li>
+                            <li class='disabled'>
                                 <a href="morris.html">회전율</a>
                             </li>
-                            <li>
+                            <li class='disabled'>
                                 <a href="morris.html">업종분류</a>
                             </li>                            
                         </ul>
