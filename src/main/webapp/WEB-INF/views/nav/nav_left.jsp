@@ -40,11 +40,11 @@
                     </li>
                 	                                    
                     <li class="disabled">
-                        <a href="javascript:action_menu('/dashboard')"><i class="fa fa-dashboard fa-fw"></i>Dash Board</a>
+                        <a href="javascript:action_menu('/dashboard')"><i class="fa fa-dashboard fa-fw"></i> DASH BOARD</a>
                     </li>
                                         
                     <li>
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>채권지수<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-lemon-o  fa-fw"></i> 채권지수<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
                                 <a href="javascript:action_menu('/bond/item?cd=ktb')">국고채</a>
@@ -56,28 +56,22 @@
                         <!-- /.nav-second-level -->
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>주식지수<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-lemon-o fa-fw"></i> 주식지수<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
                                 <a href="javascript:action_menu('/stock/constitution')">지수 구성정보</a>
                             </li>
-                            <li class='disabled'>
-                                <a href="morris.html">지수 시계열</a>
-                            </li>                           
-                            <li class='disabled'>
-                                <a href="morris.html">지수별 보유비중</a>
-                            </li>                            
+                            <li>
+                                <a href="javascript:action_menu('/stock/profile')">지수 프로파일</a>
+                            </li>                       
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
                                         
-                    <li class='disabled'>
-                        <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>시뮬레이션<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li class='disable'>
-                                <a href="javascript:action_menu('/stock/constitution')">지수 시계열</a>
-                            </li>
-                            <li class='disabled'>
+                    <li>
+                        <a href="#"><i class="fa fa-lemon-o fa-fw"></i> 시뮬레이션 레포트<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">                            
+                            <li>
                                 <a href="morris.html">리턴 프로파일</a>
                             </li>                           
                             <li class='disabled'>

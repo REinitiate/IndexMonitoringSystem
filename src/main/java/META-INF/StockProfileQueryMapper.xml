@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="StockProfileQueryMapper">	
+	
+	<select id="selectUcdList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[SELECT A.U_CD "종목코드", A.U_NM "종목이름"
+				FROM FNS_U_MAST A
+				WHERE (A.U_CD LIKE 'FI0%' OR A.U_CD LIKE 'S%')
+		]]>
+	</select>
+	
+	<select id="selectCntInStyleUniv" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[SELECT COUNT(*) CNT
+				FROM FNI_STYLE_UNIV
+				WHERE START_DT IN (SELECT MAX(START_DT) FROM FNI_STYLE_UNIV WHERE START_DT <= #{trd_dt})
+				AND U_CD = #{u_cd})
+		]]>
+	</select>
+	
+	
+	<select id="selectPastAvailableDateByDays" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[SELECT MAX(A.TRD_DT) TRD_DT
+				FROM FNC_CALENDAR A
+				WHERE A.TRD_DT <= (TO_DATE(#{dt}, 'YYYYMMDD') - #{interval}) 
+				AND A.OPEN_GB_STOCK = '0'
+		]]>
+	</select>
+	
+	<select id="selectPastAvailableDateByMonths" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[SELECT MAX(A.TRD_DT) TRD_DT
+				FROM FNC_CALENDAR A
+				WHERE A.TRD_DT <= (ADD_MONTHS(TO_DATE(#{dt}, 'YYYYMMDD'), -1 * #{interval})) 
+				AND A.OPEN_GB_STOCK = '0'		
+		]]>
+	</select>
+	
+	<select id="selectAdjPrice" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[SELECT ADJ_PRC ADJ_PRC
+				FROM FNS_JD A
+				WHERE A.TRD_DT = #{dt}
+				AND A.U_CD = #{u_cd}		
+		]]>
+	</select>
+	
+	<select id="selectUnmWithUcd" parameterType="String" resultType="String">
+		<![CDATA[
+			SELECT U_NM "지수이름"
+			FROM FNS_U_MAST
+			WHERE U_CD = #{u_cd}
+		]]>
+	</select>
+	
+</mapper>

@@ -13,7 +13,7 @@ public class StockService extends SqlSessionDaoSupport implements StockDao {
 	public List<HashMap<String, String>> selectUcdList() {
 		List<HashMap<String, String>> result = null;
 		HashMap<String, String> input = new HashMap<String, String>();
-		result = getSqlSession().selectList("StockQueryMapper.selectUcdList", input);		
+		result = getSqlSession().selectList("StockConstitutionQueryMapper.selectUcdList", input);		
 		return result;
 	}	
 	
@@ -21,7 +21,7 @@ public class StockService extends SqlSessionDaoSupport implements StockDao {
 	public String GetUcdListByJson(String type){
 		List<HashMap<String, String>> dbOutput = null;
 		HashMap<String, String> input = new HashMap<String, String>();
-		dbOutput = getSqlSession().selectList("StockQueryMapper.selectUcdList", input);
+		dbOutput = getSqlSession().selectList("StockConstitutionQueryMapper.selectUcdList", input);
 		
 		StringBuilder sb = new StringBuilder();
 		
@@ -44,6 +44,5 @@ public class StockService extends SqlSessionDaoSupport implements StockDao {
 		sb.append("]}");		
 		return sb.toString();
 	}
-
 	
 }

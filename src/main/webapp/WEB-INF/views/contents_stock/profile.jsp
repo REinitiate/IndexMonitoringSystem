@@ -12,52 +12,32 @@
 	
 	<div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">지수 구성 정보</h1>
+            <h1 class="page-header">지수 프로파일 레포트</h1>
         </div>
         <!-- /.col-lg-12 -->
     
     <!--  인풋 컨트롤 박스 -->
     <div id='input_box_1'>    	
-	    <table class="table">    
-	    <tr>
-		    <td><label for="index_search">지수 선택 : </label></td>
-		    <td><input id="index_search" type="text" class="typeahead" style='width: 300px'></td>
-	    </tr>
-	    <tr>
-		    <td><label for=" dt">주식수기준 날짜 선택 : </label></td>
-		    <td><a><input name="dt" type="text" id="dt_stk" style='width: 300px'></a></td>
-	    </tr>
-	    <tr>
-		    <td><label for=" dt">주가기준 날짜 선택 : </label></td>
-		    <td><a><input name="dt" type="text" id="dt_prc" style='width: 300px'></a></td>
-	    </tr>
-	    <tr>
-		    <td><label for=" dt">유니브기준 날짜 선택 : </label></td>
-		    <td><a><input name="dt" type="text" id="dt_univ" style='width: 300px'></a></td>
-	    </tr>	    
-	    <tr>
-	    	<td><label>가격 기준 : </label></td>
-	    	<td>
-	    		<div class="btn-group" style="margin-bottom: 10px">		
-					<button type="button" class="btn btn-default btn_radio_prc">종가기준</button>
-			  		<button type="button" class="btn btn-default btn_radio_prc">기준가기준</button>
-			  		<input id='input_prc_type' type="text" class="btn btn-info"/>
-				</div>
-			</td>		
-	    </tr>
-	    <tr>
-	    	<td><label>유니버스 테이블 기준 : </label></td>
-	    	<td>
-	    		<div class="btn-group" style="margin-bottom: 10px">
-	    			<button type="button" class="btn btn-default btn_radio_univ">FNI_MFI_U_MAP_HIST</button>
-	    			<button type="button" class="btn btn-default btn_radio_univ">FNI_STYLE_UNIV</button>
-			  		<input id='input_univ_type' type="text" class="btn btn-info"/>
-				</div>
-			</td>		
-	    </tr>    
+	    <table class="table">
+		    <tr>
+			    <td><label for="index_search">지수 선택 : </label></td>
+			    <td><input id="index_search" type="text" class="typeahead" style='width: 300px'></td>
+		    </tr>
+		    <tr>
+			    <td><label for="benchmark_search">벤치마크 선택 : </label></td>
+			    <td><input id="benchmark_search" type="text" class="typeahead" style='width: 300px'></td>
+		    </tr>
+		    <tr>
+			    <td><label for=" dt">기준일(T0) 선택 : </label></td>
+			    <td><a><input name="dt" type="text" id="dt_t0" style='width: 300px'></a></td>
+		    </tr>
+		    <tr>
+			    <td><label for=" dt">기준일(T1) 선택 : </label></td>
+			    <td><a><input name="dt" type="text" id="dt_t1" style='width: 300px'></a></td>
+		    </tr>  
 	    </table>
 	    <div style="margin-bottom: 10px">
-	    	<input type="button" value="테이블 갱신" class="btn btn-success" onclick="refresh_data();"/>
+	    	<input type="button" value="결과 출력" class="btn btn-success" onclick="refresh_data();"/>
 	    	<input id="btn_copy" type="button" value="Copy to clipboard" class="btn btn-default"/>
     	</div>
     </div>    
@@ -85,15 +65,15 @@
 			// Copy to clipboard 초기화
 			initialize_copy_module();
 			
-			// 인풋 초기화
-			$('#dt_univ').val('20140709');			
-			$('#dt_prc').val('20140709');
-			$('#dt_stk').val('20140709');
-			$('#index_search').val('FI00(MKF500)');
-			$('#input_prc_type').val('종가기준');
-			$('#input_univ_type').val('FNI_MFI_U_MAP_HIST');
+			// 인풋 초기화;
+			$('#index_search').val('FI00.WLT.LVL(low vol)');
+			$('#benchmark_search').val('I.101(KOSPI200)');
+			$('#dt_t0').val('20010102');
+			$('#dt_t1').val(${dt});
 			
-			refresh_data();
+			
+			$('#index_search').val('FI00.WLT.LVL(low vol)');
+			
 			
 			$.ajax({
 				  url: '${pageContext.request.contextPath}/stock/ucdlist',
@@ -109,30 +89,17 @@
 		});
 		
 		$(function(){
-        	$('#dt_univ, #dt_prc, #dt_stk').datepicker(
+        	$('#dt_t0, #dt_t1').datepicker(
         				{
 	        				dateFormat: 'yymmdd',
 	        				onSelect: function(){
 	        					if($('#service').val() == "")
         						{
 	        						action_menu($('/home').val());
-        						}
-	        					else
-        						{
-	        						//action_menu($('#service').val());
         						}	        					
 	        				}
         				}
         			);
-        	
-        	// 주가 타입 라디오 버튼 클릭 이벤트
-        	$('.btn_radio_prc').click(function(data){        		
-        		$('#input_prc_type').val($(this).text());
-        	});
-        	// 유니버스 테이블 라디오 버튼 클릭 이벤트        	
-        	$('.btn_radio_univ').click(function(data){        		
-        		$('#input_univ_type').val($(this).text());
-        	});
         });
 		
 		function initialize_copy_module()
@@ -157,34 +124,17 @@
 		}
 		
 		function refresh_data()
-		{
-			
+		{	
 			$('#constitution_result').hide();
 			
-			var input_dt_univ = $('#dt_univ').val();			
-			var input_dt_prc = $('#dt_prc').val();
-			var input_dt_stk = $('#dt_stk').val();
-			var input_index_name = $('#index_search').val().split('(')[0];
-			var input_prc_type = null;
-			var input_univ_type = null;
-			
-			if($('#input_prc_type').val() == '종가기준'){
-				input_prc_type = 'cls_prc';
-			}
-			else if($('#input_prc_type').val() == '기준가기준'){
-				input_prc_type = 'std_prc';
-			}
-			
-			if($('#input_univ_type').val() == 'FNI_MFI_U_MAP_HIST'){
-				input_univ_type = 'FNI_MFI_U_MAP_HIST';
-			}
-			else if($('#input_univ_type').val() == 'FNI_STYLE_UNIV'){
-				input_univ_type = 'FNI_STYLE_UNIV';
-			}
+			$('#index_search').val('FI00.WLT.LVL(low vol)');
+			$('#benchmark_search').val('I.101(KOSPI200)');
+			$('#dt_t0').val('20010102');
+			$('#dt_t1').val(${dt});
 			
 			$.ajax({
 				type: 'post',				
-				url: '${pageContext.request.contextPath}/stock/constitution/json',
+				url: '${pageContext.request.contextPath}/stock/profile/json',
 				contentType: "application/x-www-form-urlencoded; charset=UTF-8",				
 				dataType: "json",
 				beforeSend: function(){
@@ -193,7 +143,7 @@
 				complete: function(){
 				     $("#loading").hide();
 				},
-				data: {u_cd : input_index_name, dt_univ : input_dt_univ, dt_prc : input_dt_prc, dt_stk : input_dt_stk, prc_type : input_prc_type, univ_type : input_univ_type},				
+				data: {u_cd:$('#index_search').val(), bm:$('#benchmark_search').val(), t0:$('#dt_t0').val(), t1:$('#dt_t1').val()},				
 				success: function(data){					
 					// 지수정보 작업
 					var info = '';

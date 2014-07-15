@@ -35,15 +35,15 @@ public class StockConstService extends SqlSessionDaoSupport {
 		List<HashMap<String, Object>> result = null;
 		if(prcType == PriceType.CLS_PRC){
 			if(univType == univType.FNI_MFI_U_MAP_HIST)
-				result = format(getSqlSession().selectList("StockQueryMapper.selectConstFromFniMfiClsPrc", input));
+				result = format(getSqlSession().selectList("StockConstitutionQueryMapper.selectConstFromFniMfiClsPrc", input));
 			else if(univType == univType.FNI_STYLE_UNIV)
-				result = format(getSqlSession().selectList("StockQueryMapper.selectConstFromFniStyleClsPrc", input));
+				result = format(getSqlSession().selectList("StockConstitutionQueryMapper.selectConstFromFniStyleClsPrc", input));
 		}	
 		else if(prcType == PriceType.STD_PRC){
 			if(univType == univType.FNI_MFI_U_MAP_HIST)
-				result = format(getSqlSession().selectList("StockQueryMapper.selectConstFromFniMfiStdPrc", input));
+				result = format(getSqlSession().selectList("StockConstitutionQueryMapper.selectConstFromFniMfiStdPrc", input));
 			else if(univType == univType.FNI_STYLE_UNIV)
-				result = format(getSqlSession().selectList("StockQueryMapper.selectConstFromFniStyleStdPrc", input));
+				result = format(getSqlSession().selectList("StockConstitutionQueryMapper.selectConstFromFniStyleStdPrc", input));
 		}	
 
 		return result;
@@ -63,7 +63,7 @@ public class StockConstService extends SqlSessionDaoSupport {
 		}
 		obj.put("종목", objArray);
 		
-		String u_nm = (String) getSqlSession().selectOne("StockQueryMapper.selectUnmWithUcd", u_cd);
+		String u_nm = (String) getSqlSession().selectOne("StockConstitutionQueryMapper.selectUnmWithUcd", u_cd);
 		JSONObject obj2 = new JSONObject();
 		obj2.put("지수코드", u_cd);
 		obj2.put("지수이름", u_nm);

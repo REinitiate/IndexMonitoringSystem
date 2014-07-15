@@ -29,8 +29,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import fnguide.index.monitoring.stock.StockConstService;
+import fnguide.index.monitoring.stock.StockProfileService;
 import fnguide.index.monitoring.stock.StockConstService.PriceType;
 import fnguide.index.monitoring.stock.StockConstService.UnivType;
+import fnguide.index.monitoring.stock.StockProfileService.IntervalType;
 import fnguide.index.monitoring.stock.StockService;
 import fnguide.index.monitoring.utility.Converter;
 import fnguide.index.monitoring.utility.Ut;
@@ -45,28 +47,16 @@ public class StockController {
 	@Autowired
 	public StockConstService stockConstService;
 	
+	@Autowired
+	public StockProfileService stockProfileService;
+	
 	@RequestMapping(value = "/stock/constitution", method={RequestMethod.GET, RequestMethod.POST})	
-	public String BondItem(@RequestParam(required=false) String dt, String cd, HttpServletRequest req, Model model) {
+	public String GetIndexConstitution(@RequestParam(required=false) String dt, String cd, HttpServletRequest req, Model model) {
 				
 		model.addAttribute("type", "url");
 		model.addAttribute("contents", "contents_stock/constitution.jsp");
-		model.addAttribute("service", "/stock/constitution");
-		model.addAttribute("ucdList", GetUcdList(req, model));
+		model.addAttribute("service", "/stock/constitution");		
 		return "template";
-	}
-	
-	@RequestMapping(value = "/stock/ucdlist", method=RequestMethod.GET, produces = "application/json; charset=utf-8")
-	@ResponseBody
-	public String GetUcdList(HttpServletRequest req, Model model) {		
-		String uCdList = stockService.GetUcdListByJson("cd");
-		return uCdList;
-	}
-	
-	@RequestMapping(value = "/stock/unmlist", method=RequestMethod.GET, produces = "application/json; charset=utf-8")
-	@ResponseBody
-	public String GetUnMList(HttpServletRequest req, Model model) {		
-		String uCdList = stockService.GetUcdListByJson("nm");
-		return uCdList;
 	}
 	
 	@RequestMapping(value = "/stock/constitution/json", method=RequestMethod.POST, produces = "application/json; charset=utf-8")
@@ -96,4 +86,49 @@ public class StockController {
 		}
 		return result;
 	}
+	
+	@RequestMapping(value = "/stock/ucdlist", method=RequestMethod.GET, produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String GetUcdList(HttpServletRequest req, Model model) {		
+		String uCdList = stockService.GetUcdListByJson("cd");
+		return uCdList;
+	}
+	
+	@RequestMapping(value = "/stock/unmlist", method=RequestMethod.GET, produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String GetUnMList(HttpServletRequest req, Model model) {		
+		String uCdList = stockService.GetUcdListByJson("nm");
+		return uCdList;
+	}
+	
+	@RequestMapping(value = "/stock/profile", method={RequestMethod.GET, RequestMethod.POST})	
+	public String GetIndexProfile(@RequestParam(required=false) String dt, String cd, HttpServletRequest req, Model model) {				
+		model.addAttribute("type", "url");
+		model.addAttribute("contents", "contents_stock/profile.jsp");
+		model.addAttribute("service", "/stock/profile");
+		return "template";
+	}
+	
+	@RequestMapping(value = "/stock/profile/json", method={RequestMethod.GET, RequestMethod.POST}, produces = "application/json; charset=utf-8")
+	@ResponseBody	
+	public String GetIndexProfileJson(@RequestParam(required=false) String u_cd, String bm, String t0, String t1, HttpServletRequest req, Model model) {		
+		
+		String result = null;
+		
+		String dt_w1, dt_m1, dt_m3, dt_m6, dt_y1, dt_y3, dt_y5;
+		
+		dt_w1 = stockProfileService.GetAvailableDt(t1, 7, IntervalType.Days);
+		dt_m1 = stockProfileService.GetAvailableDt(t1, 1, IntervalType.Months);
+		dt_m3 = stockProfileService.GetAvailableDt(t1, 3, IntervalType.Months);
+		dt_m6 = stockProfileService.GetAvailableDt(t1, 6, IntervalType.Months);
+		dt_y1 = stockProfileService.GetAvailableDt(t1, 12, IntervalType.Months);
+		dt_y3 = stockProfileService.GetAvailableDt(t1, 36, IntervalType.Months);
+		dt_y5 = stockProfileService.GetAvailableDt(t1, 60, IntervalType.Months);
+		
+		// 지수 유효 시계열 검색 start_dt, end_dt 검색
+		
+		return "test";
+	}
+	
+	
 }

@@ -53,10 +53,10 @@
 						    <tbody>    	
 						    	<c:forEach items="${outItemHist}" var="map">
 						    		<c:choose>						    			
-						    			<c:when test="${map['이자경고'].equals('경고')}"><tr class="info"></c:when>
+						    			<c:when test="${map['만기경고'].equals('경고')}"><tr class="danger"></c:when>
 						    			<c:otherwise>
 						    				<c:choose>
-						    					<c:when test="${map['만기경고'].equals('경고')}"><tr class="info"></c:when>
+						    					<c:when test="${map['이자경고'].equals('경고')}"><tr class="info"></c:when>
 								    			<c:otherwise>
 								    				<c:choose>
 									    				<c:when test="${map['편입여부'].equals('편출')}"><tr class="warning"></c:when>

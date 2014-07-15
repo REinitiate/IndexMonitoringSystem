@@ -47,9 +47,16 @@
 		  document.getElementsByTagName("head")[0].appendChild(msViewportStyle)
 		}
 	
+	$(function(){
+		$('#loading').hide();
+	});
+	
 	</script>
 </head>
 <body>	
+	<div id="loading" style="position:absolute; top:50%; left :0; width:100%; margin-top: -10px; line_height:20px; text-align:center;">
+		<p><img src='${pageContext.request.contextPath}/resources/img/ajax-loader.gif'/>
+	</div>
 
     <div id="wrapper">
         <jsp:include page="nav/nav_top.jsp"/>    <!-- 상단 탑 메뉴 -->
@@ -90,4 +97,5 @@
     <script src="${pageContext.request.contextPath}/resources/js/modules/exporting.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/modules/bootstrap3-typeahead.js"></script>
     
-    
+    <!-- Copy to clipboard module -->
+    <script src="${pageContext.request.contextPath}/resources/js/ZeroClipboard.js"></script>		
