@@ -10,70 +10,73 @@
 	}
 	</style>
 	
+	<!--  인풋 컨트롤 박스 -->
 	<div class="row">
+	    <div id='input_box_1'>    	
+		    <table class="table">    
+		    <tr>
+			    <td><label for="index_search">지수 선택 : </label></td>
+			    <td><input id="index_search" type="text" class="typeahead" style='width: 300px'></td>
+		    </tr>
+		    <tr>
+			    <td><label for=" dt">주식수기준 날짜 선택 : </label></td>
+			    <td><a><input name="dt" type="text" id="dt_stk" style='width: 300px'></a></td>
+		    </tr>
+		    <tr>
+			    <td><label for=" dt">주가기준 날짜 선택 : </label></td>
+			    <td><a><input name="dt" type="text" id="dt_prc" style='width: 300px'></a></td>
+		    </tr>
+		    <tr>
+			    <td><label for=" dt">유니브기준 날짜 선택 : </label></td>
+			    <td><a><input name="dt" type="text" id="dt_univ" style='width: 300px'></a></td>
+		    </tr>	    
+		    <tr>
+		    	<td><label>가격 기준 : </label></td>
+		    	<td>
+		    		<div class="btn-group" style="margin-bottom: 10px">		
+						<button type="button" class="btn btn-default btn_radio_prc">종가기준</button>
+				  		<button type="button" class="btn btn-default btn_radio_prc">기준가기준</button>
+				  		<input id='input_prc_type' type="text" class="btn btn-info"/>
+					</div>
+				</td>		
+		    </tr>
+		    <tr>
+		    	<td><label>유니버스 테이블 기준 : </label></td>
+		    	<td>
+		    		<div class="btn-group" style="margin-bottom: 10px">
+		    			<button type="button" class="btn btn-default btn_radio_univ">FNI_MFI_U_MAP_HIST</button>
+		    			<button type="button" class="btn btn-default btn_radio_univ">FNI_STYLE_UNIV</button>
+				  		<input id='input_univ_type' type="text" class="btn btn-info"/>
+					</div>
+				</td>		
+		    </tr>    
+		    </table>
+		    <div style="margin-bottom: 10px">
+		    	<input type="button" value="테이블 갱신" class="btn btn-success" onclick="refresh_data();"/>
+		    	<input id="btn_copy" type="button" value="Copy to clipboard" class="btn btn-default"/>
+	    	</div>
+	    </div>  
+	</div>
+	
+	<div id='contents' class="row">
         <div class="col-lg-12">
             <h1 class="page-header">지수 구성 정보</h1>
         </div>
-        <!-- /.col-lg-12 -->
-    
-    <!--  인풋 컨트롤 박스 -->
-    <div id='input_box_1'>    	
-	    <table class="table">    
-	    <tr>
-		    <td><label for="index_search">지수 선택 : </label></td>
-		    <td><input id="index_search" type="text" class="typeahead" style='width: 300px'></td>
-	    </tr>
-	    <tr>
-		    <td><label for=" dt">주식수기준 날짜 선택 : </label></td>
-		    <td><a><input name="dt" type="text" id="dt_stk" style='width: 300px'></a></td>
-	    </tr>
-	    <tr>
-		    <td><label for=" dt">주가기준 날짜 선택 : </label></td>
-		    <td><a><input name="dt" type="text" id="dt_prc" style='width: 300px'></a></td>
-	    </tr>
-	    <tr>
-		    <td><label for=" dt">유니브기준 날짜 선택 : </label></td>
-		    <td><a><input name="dt" type="text" id="dt_univ" style='width: 300px'></a></td>
-	    </tr>	    
-	    <tr>
-	    	<td><label>가격 기준 : </label></td>
-	    	<td>
-	    		<div class="btn-group" style="margin-bottom: 10px">		
-					<button type="button" class="btn btn-default btn_radio_prc">종가기준</button>
-			  		<button type="button" class="btn btn-default btn_radio_prc">기준가기준</button>
-			  		<input id='input_prc_type' type="text" class="btn btn-info"/>
-				</div>
-			</td>		
-	    </tr>
-	    <tr>
-	    	<td><label>유니버스 테이블 기준 : </label></td>
-	    	<td>
-	    		<div class="btn-group" style="margin-bottom: 10px">
-	    			<button type="button" class="btn btn-default btn_radio_univ">FNI_MFI_U_MAP_HIST</button>
-	    			<button type="button" class="btn btn-default btn_radio_univ">FNI_STYLE_UNIV</button>
-			  		<input id='input_univ_type' type="text" class="btn btn-info"/>
-				</div>
-			</td>		
-	    </tr>    
-	    </table>
-	    <div style="margin-bottom: 10px">
-	    	<input type="button" value="테이블 갱신" class="btn btn-success" onclick="refresh_data();"/>
-	    	<input id="btn_copy" type="button" value="Copy to clipboard" class="btn btn-default"/>
-    	</div>
-    </div>    
-    <div class="row">
-          <div class="col-md-12 col-lg-11">
-			<div class="panel panel-default">
-		        <div id='result1_info' class="panel-heading">		        	                                       
-		        </div>		                                
-		        <div id="constitution_result" class="panel-body">		        	
-		            <table id="result1" class="table table-striped table-bordered">		            	
-		            </table>
-			    </div>
+        <!-- /.col-lg-12 -->   
+      
+	    <div class="row">
+	          <div class="col-md-12 col-lg-11">
+				<div class="panel panel-default">
+			        <div id='result1_info' class="panel-heading">		        	                                       
+			        </div>		                                
+			        <div id="constitution_result" class="panel-body">		        	
+			            <table id="result1" class="table table-striped table-bordered">		            	
+			            </table>
+				    </div>
+			   </div>
+			   
 		   </div>
-		   
-	   </div>
-    </div>
+	    </div>
     
     <div id='result_table' class="panel-body"></div>
 	
@@ -159,7 +162,7 @@
 		function refresh_data()
 		{
 			
-			$('#constitution_result').hide();
+			$('#contents').hide();
 			
 			var input_dt_univ = $('#dt_univ').val();			
 			var input_dt_prc = $('#dt_prc').val();
@@ -239,7 +242,7 @@
 					}										
 					div.html(html);
 					initialize_copy_module();
-					$('#constitution_result').show('slide', {direction:'up'}, 1000);
+					$('#contents').show('slide', {direction:'up'}, 1000);
 	            },
 	            error: function(XMLHttpRequest, textStatus, errorThrown) {	            	  
 	              alert("Status: " + textStatus); alert("Error: " + errorThrown); 

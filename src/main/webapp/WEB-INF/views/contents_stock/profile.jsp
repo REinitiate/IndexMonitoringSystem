@@ -56,7 +56,7 @@
 	    	<input id="btn_copy" type="button" value="Copy to clipboard" class="btn btn-default"/>
     	</div>
     </div>    
-    <div class="row">
+    <div id="contents" class="row">
           <div class="col-md-12 col-lg-11">
 			<div class="panel panel-default">
 		        <div id='result1_info' class="panel-heading">		        	                                       
@@ -73,13 +73,14 @@
 		   
 		   <div class="panel panel-default">
 			   	<div id='chart' class="panel-body">
-			   		<div class="panel-heading">
-				            <i class="fa fa-bar-chart-o fa-fw"></i> 차트                            
+			   		 <div class="panel-heading">
+				        <i class="fa fa-bar-chart-o fa-fw"></i> 차트                            
 				     </div>
 				     <div id="chart" class="panel-body">                     
-			    </div>
-		   </div>
-	   </div>
+			    	</div>
+		   		</div>
+	   		</div>
+    	</div>
     </div>
 	
 	<script>
@@ -98,6 +99,7 @@
 			$('#index_search').val('FI00.WLT.LVL(low vol)');
 			
 			
+			// 지수 선택 자동완성
 			$.ajax({
 				  url: '${pageContext.request.contextPath}/stock/ucdlist',
 				  contentType: "application/x-www-form-urlencoded; charset=UTF-8",
@@ -109,6 +111,9 @@
 	                  alert("Status: " + textStatus); alert("Error: " + errorThrown); 
 	               }
 				});
+			
+			refresh_data();
+			
 		});
 		
 		$(function(){
@@ -148,7 +153,7 @@
 		
 		function refresh_data()
 		{	
-			$('#constitution_result').hide();
+			$('#contents').hide();
 			
 			var input_u_cd = $('#index_search').val().split('(')[0];
 			var input_bm = $('#benchmark_search').val().split('(')[0];
@@ -200,11 +205,11 @@
 					html = html + "<tr><td>IR</td><td class='number'>" + data.리스크프로파일.인덱스.IR + "</td><td class='number'>" + "</td></tr>";					
 					div.html(html);
 					
-					// 차트 생성
-					DrawChart(data.정보.SERIES1, data.정보.지수이름, data.정보.SERIES2, data.정보.벤치마크이름);
-					
+					// 차트 생성										
 					initialize_copy_module();
-					$('#constitution_result').show('slide', {direction:'up'}, 1000);
+					
+					$('#contents').show('slide', {direction:'up'}, 1000);
+					DrawChart(data.정보.SERIES1, data.정보.지수이름, data.정보.SERIES2, data.정보.벤치마크이름);
 	            },
 	            error: function(XMLHttpRequest, textStatus, errorThrown) {	            	  
 	              alert("Status: " + textStatus); alert("Error: " + errorThrown); 
