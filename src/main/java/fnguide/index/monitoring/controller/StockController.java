@@ -13,6 +13,7 @@ import javax.print.DocFlavor.INPUT_STREAM;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ibatis.session.SqlSession;
+import org.json.JSONObject;
 import org.junit.runner.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,23 +112,20 @@ public class StockController {
 	
 	@RequestMapping(value = "/stock/profile/json", method={RequestMethod.GET, RequestMethod.POST}, produces = "application/json; charset=utf-8")
 	@ResponseBody	
-	public String GetIndexProfileJson(@RequestParam(required=false) String u_cd, String bm, String t0, String t1, HttpServletRequest req, Model model) {		
+	public String GetIndexProfileJson(@RequestParam(required=false) String u_cd, String u_cd_bm, String t0, String t1, HttpServletRequest req, Model model) {		
+			
 		
-		String result = null;
+		JSONObject result = new JSONObject();
 		
-		String dt_w1, dt_m1, dt_m3, dt_m6, dt_y1, dt_y3, dt_y5;
+		JSONObject jsonRiskProfile = stockProfileService.GetRiskProfileJson(u_cd, u_cd_bm, t0, t1);
+		JSONObject jsonReturnProfile = stockProfileService.GetReturnProfileJson(u_cd, u_cd_bm, t0, t1);
+		JSONObject jsonInfo = stockProfileService.GetInfoJson(u_cd, u_cd_bm, t0, t1);
 		
-		dt_w1 = stockProfileService.GetAvailableDt(t1, 7, IntervalType.Days);
-		dt_m1 = stockProfileService.GetAvailableDt(t1, 1, IntervalType.Months);
-		dt_m3 = stockProfileService.GetAvailableDt(t1, 3, IntervalType.Months);
-		dt_m6 = stockProfileService.GetAvailableDt(t1, 6, IntervalType.Months);
-		dt_y1 = stockProfileService.GetAvailableDt(t1, 12, IntervalType.Months);
-		dt_y3 = stockProfileService.GetAvailableDt(t1, 36, IntervalType.Months);
-		dt_y5 = stockProfileService.GetAvailableDt(t1, 60, IntervalType.Months);
+		result.put("리턴프로파일", jsonReturnProfile);
+		result.put("리스크프로파일", jsonRiskProfile);
+		result.put("정보", jsonInfo);
 		
-		// 지수 유효 시계열 검색 start_dt, end_dt 검색
-		
-		return "test";
+		return result.toString();
 	}
 	
 	

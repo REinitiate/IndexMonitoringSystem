@@ -8,6 +8,21 @@
 	{
 		text-align: center;	
 	}
+	
+	#result1 .number
+	{
+		text-align: right;
+	}
+	
+	#result2 .number
+	{
+		text-align: right;
+	}
+	
+	#result1 .text
+	{
+		text-align: left;
+	}	
 	</style>
 	
 	<div class="row">
@@ -45,19 +60,27 @@
           <div class="col-md-12 col-lg-11">
 			<div class="panel panel-default">
 		        <div id='result1_info' class="panel-heading">		        	                                       
-		        </div>		                                
+		        </div>
+		        		        
 		        <div id="constitution_result" class="panel-body">		        	
-		            <table id="result1" class="table table-striped table-bordered">		            	
+		            <table id="result1" class="table table-striped table-bordered" style="max-width:500px">		            	
+		            </table>
+		            
+		            <table id="result2" class="table table-striped table-bordered" style="max-width:500px">		            	
 		            </table>
 			    </div>
 		   </div>
 		   
+		   <div class="panel panel-default">
+			   	<div id='chart' class="panel-body">
+			   		<div class="panel-heading">
+				            <i class="fa fa-bar-chart-o fa-fw"></i> 차트                            
+				     </div>
+				     <div id="chart" class="panel-body">                     
+			    </div>
+		   </div>
 	   </div>
     </div>
-    
-    <div id='result_table' class="panel-body"></div>
-	
-	</div>
 	
 	<script>
 		$(function(){
@@ -69,7 +92,7 @@
 			$('#index_search').val('FI00.WLT.LVL(low vol)');
 			$('#benchmark_search').val('I.101(KOSPI200)');
 			$('#dt_t0').val('20010102');
-			$('#dt_t1').val(${dt});
+			$('#dt_t1').val('20140709');
 			
 			
 			$('#index_search').val('FI00.WLT.LVL(low vol)');
@@ -127,10 +150,8 @@
 		{	
 			$('#constitution_result').hide();
 			
-			$('#index_search').val('FI00.WLT.LVL(low vol)');
-			$('#benchmark_search').val('I.101(KOSPI200)');
-			$('#dt_t0').val('20010102');
-			$('#dt_t1').val(${dt});
+			var input_u_cd = $('#index_search').val().split('(')[0];
+			var input_bm = $('#benchmark_search').val().split('(')[0];
 			
 			$.ajax({
 				type: 'post',				
@@ -143,51 +164,45 @@
 				complete: function(){
 				     $("#loading").hide();
 				},
-				data: {u_cd:$('#index_search').val(), bm:$('#benchmark_search').val(), t0:$('#dt_t0').val(), t1:$('#dt_t1').val()},				
+				data: {u_cd:input_u_cd, u_cd_bm:input_bm, t0:$('#dt_t0').val(), t1:$('#dt_t1').val()},				
 				success: function(data){					
 					// 지수정보 작업
 					var info = '';
-					info = info + '지수코드 : ' + data.정보.지수코드 + '<br/>';
-					info = info + '지수이름 : ' + data.정보.지수이름 + '<br/>';
-					info = info + '종목개수 : ' + data.정보.종목개수 + '개<br/>';
-					info = info + '주가구분 : ' + data.정보.주가구분 + '<br/>';
-					info = info + '유니브기준일자 : ' + data.정보.유니브기준일자 + '<br/>';
-					info = info + '주가기준일자 : ' + data.정보.주가기준일자;
+					info = info + '시계열 첫시점 : ' + data.정보.T0 + '<br/>';
+					info = info + '시계열 마지막  : ' + data.정보.T1 + '<br/>';					
 					$('#result1_info').html(info);
 										
 					// 테이블 작업
-					var size = data.종목.length;
-					var div = $('#result1');
-					
+					var div = $('#result1');					
 					var html = '';
-					if(input_univ_type == 'FNI_STYLE_UNIV'){
-						
-					}
-					else if(input_univ_type == 'FNI_MFI_U_MAP_HIST'){
-						
-					}
-					
-					var html = data.헤더;
-					
-					for(i=0; i<size; i++){
-						html = html + '<tr>';						
-						html = html + '<td>' + data.종목[i].종목코드 + '</td>';
-						html = html + '<td>' + data.종목[i].종목이름 + '</td>';
-						html = html + '<td>' + data.종목[i].상장주식수 + '</td>';
-						html = html + '<td>' + data.종목[i].상장예정주식수 + '</td>';
-						html = html + '<td>' + data.종목[i].유동비율 + '</td>';
-						
-						if(input_univ_type == 'FNI_STYLE_UNIV'){
-							html = html + '<td>' + data.종목[i].IIF + '</td>';
-						}
-						
-						html = html + '<td align="right">' + data.종목[i].지수채용주식수 + '</td>';
-						html = html + '<td align="right">' + data.종목[i].지수채용시가총액 + '</td>';
-						html = html + '<td align="right">' + data.종목[i].주가 + '</td>';
-						html = html + '<td align="right">' + data.종목[i].비중 + '</td>';
-						html = html + '</tr>';
-					}										
+					html = html + "<thead><th colspan='3'>리턴 프로파일</th></thead>";
+					html = html + "<thead><th style='width:200px;'>기간</th><th style='width:150px;'>" + data.리턴프로파일.정보.지수코드 + "</th><th style='width:150px;'>" + data.리턴프로파일.정보.벤치마크지수코드 + "</th></thead>"
+					html = html + "<tr><td>1주일</td><td class='number'>" + data.리턴프로파일.인덱스.W1 + "</td><td class='number'>" + data.리턴프로파일.벤치마크.W1 + "</td></tr>";										
+					html = html + "<tr><td>1개월</td><td class='number'>" + data.리턴프로파일.인덱스.M1 + "</td><td class='number'>" + data.리턴프로파일.벤치마크.M1 + "</td></tr>";
+					html = html + "<tr><td>3개월</td><td class='number'>" + data.리턴프로파일.인덱스.M3 + "</td><td class='number'>" + data.리턴프로파일.벤치마크.M3 + "</td></tr>";
+					html = html + "<tr><td>6개월</td><td class='number'>" + data.리턴프로파일.인덱스.M6 + "</td><td class='number'>" + data.리턴프로파일.벤치마크.M6 + "</td></tr>";
+					html = html + "<tr><td>1년</td><td class='number'>" + data.리턴프로파일.인덱스.Y1 + "</td><td class='number'>" + data.리턴프로파일.벤치마크.Y1 + "</td></tr>";
+					html = html + "<tr><td>3년</td><td class='number'>" + data.리턴프로파일.인덱스.Y3 + "</td><td class='number'>" + data.리턴프로파일.벤치마크.Y3 + "</td></tr>";
+					html = html + "<tr><td>5년</td><td class='number'>" + data.리턴프로파일.인덱스.Y5 + "</td><td class='number'>" + data.리턴프로파일.벤치마크.Y5 + "</td></tr>";
+					html = html + "<tr><td>전체</td><td class='number'>" + data.리턴프로파일.인덱스.TOTAL + "</td><td class='number'>" + data.리턴프로파일.벤치마크.TOTAL + "</td></tr>";
 					div.html(html);
+					
+					div = $('#result2');
+					html = '';
+					html = html + "<thead><th colspan='3'>리스크 프로파일</th></thead>";
+					html = html + "<thead><th style='width:200px;'></th><th style='width:150px;'>" + data.리턴프로파일.정보.지수코드 + "</th><th style='width:150px;'>" + data.리턴프로파일.정보.벤치마크지수코드 + "</th></thead>"
+					html = html + "<tr><td>GR</td><td class='number'>" + data.리스크프로파일.인덱스.GR + "</td><td class='number'>" + data.리스크프로파일.벤치마크.GR + "</td></tr>";										
+					html = html + "<tr><td>VOL</td><td class='number'>" + data.리스크프로파일.인덱스.VOL + "</td><td class='number'>" + data.리스크프로파일.벤치마크.VOL + "</td></tr>";
+					html = html + "<tr><td>Sharp-ratio</td><td class='number'>" + data.리스크프로파일.인덱스.SR + "</td><td class='number'>" + data.리스크프로파일.벤치마크.SR + "</td></tr>";
+					html = html + "<tr><td>Beta</td><td class='number'>" + data.리스크프로파일.인덱스.BETA + "</td><td class='number'>" + "</td></tr>";
+					html = html + "<tr><td>Alpha</td><td class='number'>" + data.리스크프로파일.인덱스.ALPHA + "</td><td class='number'>" + "</td></tr>";
+					html = html + "<tr><td>TE</td><td class='number'>" + data.리스크프로파일.인덱스.TE + "</td><td class='number'>" + "</td></tr>";
+					html = html + "<tr><td>IR</td><td class='number'>" + data.리스크프로파일.인덱스.IR + "</td><td class='number'>" + "</td></tr>";					
+					div.html(html);
+					
+					// 차트 생성
+					DrawChart(data.정보.SERIES1, data.정보.지수이름, data.정보.SERIES2, data.정보.벤치마크이름);
+					
 					initialize_copy_module();
 					$('#constitution_result').show('slide', {direction:'up'}, 1000);
 	            },
@@ -195,6 +210,56 @@
 	              alert("Status: " + textStatus); alert("Error: " + errorThrown); 
 	            }
 			});
+		}
+		
+		function DrawChart(series1, u_nm, series2, u_nm2)
+		{
+			var seriesOptions = [];
+		  	seriesOptions[0] = {
+		  			name : u_nm,
+		  			data : series1  			
+		  	};		  	
+		  	seriesOptions[1] = {
+			 		name : u_nm2,	 		
+			 		data : series2,
+			 		yAxis : 1
+		  	};
+		  	
+			$("#chart").highcharts(
+	  				'StockChart', {
+	  					chart:{  						
+	  					},
+	  					title:{
+	  						text : u_nm + ' - ' + u_nm2
+	  					},
+	  					xAxis:{
+	  						type: 'datetime',
+	  						labels:{
+	  							formatter: function(){
+	  								return Highcharts.dateFormat('%Y/%m/%d', this.value);
+	  							}
+	  						}
+	  					},
+	  					tooltip:{
+	  						xDateFormat: '%Y/%m/%d',
+	  						shared: true
+	  					},
+	  					yAxis:[
+							{title: {
+							 text: u_nm
+							 },  					    
+							 offset: 0
+							}
+	  					   ,{
+	  						title: {
+	  					        text: u_nm2
+	  					    },  					    
+	  					    offset: 0,  					    
+	  					    opposite: true
+	  					}],
+	  					series : seriesOptions
+	  				}
+	  			);
 		}
 	</script>
     
