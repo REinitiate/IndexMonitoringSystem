@@ -72,10 +72,7 @@
                         <a href="#"><i class="fa fa-lemon-o fa-fw"></i> 시뮬레이션 레포트<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">                            
                             <li>
-                                <a href="morris.html">리턴 프로파일</a>
-                            </li>                           
-                            <li class='disabled'>
-                                <a href="morris.html">리스크 프로파일</a>
+                                <a href="javascript:action_menu('/simul/profile')">프로파일</a>
                             </li>
                             <li class='disabled'>
                                 <a href="morris.html">회전율</a>

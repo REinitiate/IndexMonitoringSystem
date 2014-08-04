@@ -34,9 +34,13 @@
     <!--  인풋 컨트롤 박스 -->
     <div id='input_box_1'>    	
 	    <table class="table">
+	    	<tr>
+			    <td><label for="simul_id">시뮬레이션 아이디 : </label></td>
+			    <td><input id="simul_id" type="text" style='width: 300px'></td>
+		    </tr>
 		    <tr>
-			    <td><label for="index_search">지수 선택 : </label></td>
-			    <td><input id="index_search" type="text" class="typeahead" style='width: 300px'></td>
+			    <td><label for="u_cd">지수 코드 : </label></td>
+			    <td><input id="u_cd" type="text" style='width: 300px'></td>
 		    </tr>
 		    <tr>
 			    <td><label for="benchmark_search">벤치마크 선택 : </label></td>
@@ -90,7 +94,8 @@
 			initialize_copy_module();
 			
 			// 인풋 초기화;
-			$('#index_search').val('FI00.WLT.LVL(low vol)');
+			$('#u_cd').val('FI00.WLT.001');
+			$('#simul_id').val('KDH18');			
 			$('#benchmark_search').val('I.101(KOSPI200)');
 			$('#dt_t0').val('20010102');
 			$('#dt_t1').val('20140709');
@@ -155,12 +160,13 @@
 		{	
 			$('#contents').hide();
 			
-			var input_u_cd = $('#index_search').val().split('(')[0];
+			var input_simul_id = $('#simul_id').val().trim();
+			var input_u_cd = $('#u_cd').val().trim();
 			var input_bm = $('#benchmark_search').val().split('(')[0];
 			
 			$.ajax({
 				type: 'post',				
-				url: '${pageContext.request.contextPath}/stock/profile/json',
+				url: '${pageContext.request.contextPath}/simul/profile/json',
 				contentType: "application/x-www-form-urlencoded; charset=UTF-8",				
 				dataType: "json",
 				beforeSend: function(){
@@ -169,13 +175,13 @@
 				complete: function(){
 				     $("#loading").hide();
 				},
-				data: {u_cd:input_u_cd, u_cd_bm:input_bm, t0:$('#dt_t0').val(), t1:$('#dt_t1').val()},				
+				data: {simul_id:input_simul_id, u_cd:input_u_cd, u_cd_bm:input_bm, t0:$('#dt_t0').val(), t1:$('#dt_t1').val()},				
 				success: function(data){					
 					// 지수정보 작업
-					var info = '';
-					info = info + '시계열 첫시점 : ' + data.정보.T0 + '<br/>';
-					info = info + '시계열 마지막  : ' + data.정보.T1 + '<br/>';					
-					$('#result1_info').html(info);
+					//var info = '';
+					//info = info + '시계열 첫시점 : ' + data.정보.T0 + '<br/>';
+					//info = info + '시계열 마지막  : ' + data.정보.T1 + '<br/>';					
+					//$('#result1_info').html(info);
 										
 					// 테이블 작업
 					var div = $('#result1');					

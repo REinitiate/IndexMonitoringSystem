@@ -17,6 +17,7 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	
+	
 	<!-- MyBatis -->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
         <property name="driverClass" value="oracle.jdbc.driver.OracleDriver"/>
@@ -40,5 +41,35 @@
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
         <constructor-arg index="0" ref="sqlSessionFactory"/>
     </bean>
+    
+    
+    <!-- 1. Cron 대상이 되는 클래스 정의 -->
+	<bean id="batchTest1" class="org.springframework.scheduling.quartz.JobDetailBean">
+	    <property name="jobClass" value="fnguide.index.batch.BatchTest"/>
+	</bean>
+    
+    <!-- 2. Cron 시간 설정 -->
+	<bean id="cronTrigger1" class="org.springframework.scheduling.quartz.CronTriggerBean">
+	    <property name="jobDetail" ref="batchTest1"/>
+	    <property name="cronExpression" value="0 0/1 * * * ?"/>
+	</bean>
+	
+	<!-- 3. Cron 실행 -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	    <property name="triggers">
+	        <list>
+	            <!-- <ref bean="cronTrigger1"/>  -->	            
+	        </list>
+	    </property>
+	    <property name="quartzProperties">
+	        <props>
+	            <prop key="org.quartz.threadPool.class">org.quartz.simpl.SimpleThreadPool</prop>
+	            <prop key="org.quartz.threadPool.threadCount">3</prop>
+	            <prop key="org.quartz.threadPool.threadPriority">4</prop>
+	            <prop key="org.quartz.jobStore.class">org.quartz.simpl.RAMJobStore</prop>
+	            <prop key="org.quartz.jobStore.misfireThreshold">60000</prop>
+	        </props>
+	    </property>
+	</bean>
     
 </beans>

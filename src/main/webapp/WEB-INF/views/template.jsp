@@ -17,7 +17,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
-    <title>FnIndex Monitoring System 1.0 Demo</title>
+    <title>FnIndex Monitoring System 1.0 Demo2</title>
 
     <!-- Core CSS - Include with every page -->
     <!--  <link href="resources/css/bootstrap.min.css" rel="stylesheet"> -->

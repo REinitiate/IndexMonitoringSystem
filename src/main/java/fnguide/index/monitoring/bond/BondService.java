@@ -17,6 +17,14 @@ import fnguide.index.monitoring.utility.Ut;
 @Service
 public class BondService {
 	
+	/**
+	 * 기능 : 테스트 
+	 * @param args
+	 */
+	public static void main(String args[]){
+		
+	}
+	
 	public enum IndexName{
 			KTB,
 			CASH

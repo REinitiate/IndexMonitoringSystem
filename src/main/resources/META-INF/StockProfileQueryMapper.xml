@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="StockProfileQueryMapper">	
+	
+	<!-- 지수 리스트 -->
+	<select id="selectUcdList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[SELECT A.U_CD "종목코드", A.U_NM "종목이름"
+				FROM FNS_U_MAST A
+				WHERE (A.U_CD LIKE 'FI0%' OR A.U_CD LIKE 'S%')
+		]]>
+	</select>
+	
+	<!-- FNI_STYLE_UNIV 내 지수 리스트 -->
+	<select id="selectCntInStyleUniv" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[SELECT COUNT(*) CNT
+				FROM FNI_STYLE_UNIV
+				WHERE START_DT IN (SELECT MAX(START_DT) FROM FNI_STYLE_UNIV WHERE START_DT <= #{trd_dt})
+				AND U_CD = #{u_cd})
+		]]>
+	</select>
+	
+	
+	<!-- 수익률 구하기 위하여 가용할 수 있는 날짜 가져오는 쿼리 -->
+	<select id="selectPastAvailableDateByDays" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[SELECT MIN(A.TRD_DT) TRD_DT
+				FROM FNC_CALENDAR A
+				WHERE A.TRD_DT >= (TO_DATE(#{dt}, 'YYYYMMDD') - #{interval}) 
+				AND A.OPEN_GB_STOCK = '0'
+		]]>
+	</select>
+	
+	<!-- N개월(주일) 전 시장이 열리는 날짜 -->
+	<select id="selectPastAvailableDateByMonths" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[SELECT MAX(A.TRD_DT) TRD_DT
+				FROM FNC_CALENDAR A
+				WHERE A.TRD_DT <= (ADD_MONTHS(TO_DATE(#{dt}, 'YYYYMMDD'), -1 * #{interval})) 
+				AND A.OPEN_GB_STOCK = '0'		
+		]]>
+	</select>
+	
+	<!-- 지수의 날짜 최소, 최대 -->
+	<select id="selectMinMaxDtUcd" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[SELECT MIN(A.TRD_DT) MIN, MAX(A.TRD_DT) MAX
+				 FROM FNS_UD A
+				 WHERE A.U_CD = #{u_cd}		
+		]]>
+	</select>	
+	
+	<!-- 지수 종가 & 벤치마크 종가를 같이 로드-->
+	<select id="selectClsPriceWithBm" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[SELECT A.CLS_PRC CLS_PRC, B.CLS_PRC CLS_PRC_BM
+				FROM FNS_UD A, FNS_UD B
+				WHERE A.TRD_DT = #{trd_dt}
+				AND A.U_CD = #{u_cd}
+				AND A.TRD_DT = B.TRD_DT
+				AND B.U_CD = #(u_cd_bm}		
+		]]>
+	</select>
+	
+	<!-- 지수 종가 & 벤치마크 종가를 같이 로드-->
+	<select id="selectClsPriceWithBmMultiPoint" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[SELECT A.TRD_DT TRD_DT, A.CLS_PRC CLS_PRC, B.CLS_PRC CLS_PRC_BM
+				FROM FNS_UD A, FNS_UD B
+				WHERE (A.TRD_DT = #{w1} OR A.TRD_DT = #{m1} OR A.TRD_DT = #{m3} OR A.TRD_DT = #{m6} OR A.TRD_DT = #{y1} OR A.TRD_DT = #{y3} OR A.TRD_DT = #{y5} OR A.TRD_DT = #{total}) 
+				AND A.U_CD = #{u_cd}
+				AND A.TRD_DT = B.TRD_DT
+				AND B.U_CD = #{u_cd_bm}
+				ORDER BY A.TRD_DT DESC		
+		]]>
+	</select>
+	
+	<!-- 지수 종가 -->
+	<select id="selectClsPrice" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[SELECT A.CLS_PRC CLS_PRC
+				FROM FNS_UD A
+				WHERE A.TRD_DT = #{trd_dt}
+				AND A.U_CD = #{u_cd}				
+		]]>
+	</select>	
+	
+	<!-- 지수이름 찾기 -->
+	<select id="selectUnmWithUcd" parameterType="String" resultType="String">
+		<![CDATA[
+			SELECT U_NM "지수이름"
+			FROM FNS_U_MAST
+			WHERE U_CD = #{u_cd}
+		]]>
+	</select>
+	
+	<!--  지수 위클리 시계열 With 벤치마크 -->
+	<select id="selectIdxWeeklyTimeSeriesWithBm" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[SELECT A.YMD, A.CLS_PRC CLS_PRC, A.YIELD/100 YIELD, B.CLS_PRC CLS_PRC_BM, B.YIELD/100 YIELD_BM
+				FROM FNS_UW A, FNS_UW B
+				WHERE A.U_CD = #{u_cd}
+				AND B.U_CD = #{u_cd_bm}
+				AND A.YMD BETWEEN #{t0} AND #{t1}
+				AND A.YMD = B.YMD
+				ORDER BY A.YMD ASC
+		]]>
+	</select>
+	
+	<!--  지수 월별 시계열 With 벤치마크 -->
+	<select id="selectIdxMonthlyTimeSeriesWithBm" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[SELECT A.YMD, A.CLS_PRC CLS_PRC, A.YIELD/100 YIELD, B.CLS_PRC CLS_PRC_BM, B.YIELD/100 YIELD_BM, C.AMOUNT/100/12 RF
+				FROM FNS_UM A, FNS_UM B, FNE_ECO_DATA C
+				WHERE A.U_CD = #{u_cd}
+				AND B.U_CD = #{u_cd_bm}
+				AND A.YMD BETWEEN #{t0} AND #{t1}
+				AND A.YMD = B.YMD
+				AND C.ECO_CD = '11.02.003.001'
+				AND A.END_DT = C.TRD_DT
+				AND C.TERM = 'D'
+				ORDER BY A.YMD ASC
+		]]>
+	</select>
+	
+	<!-- 지수 데일리 시계열 -->
+	<select id="selectIdxTimeSeries" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[SELECT A.TRD_DT "날짜", A.CLS_PRC "종가"
+				 FROM FNS_UD A
+				 WHERE A.U_CD = #{u_cd}
+				 ORDER BY A.TRD_DT ASC;		
+		]]>
+	</select>
+	
+</mapper>

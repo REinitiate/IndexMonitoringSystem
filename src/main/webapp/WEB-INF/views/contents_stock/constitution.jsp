@@ -12,6 +12,9 @@
 	
 	<!--  인풋 컨트롤 박스 -->
 	<div class="row">
+		<div class="col-lg-12">
+            <h1 class="page-header">지수 구성 정보</h1>
+        </div>
 	    <div id='input_box_1'>    	
 		    <table class="table">    
 		    <tr>
@@ -59,9 +62,7 @@
 	</div>
 	
 	<div id='contents' class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">지수 구성 정보</h1>
-        </div>
+        
         <!-- /.col-lg-12 -->   
       
 	    <div class="row">
@@ -96,7 +97,7 @@
 			$('#input_prc_type').val('종가기준');
 			$('#input_univ_type').val('FNI_MFI_U_MAP_HIST');
 			
-			refresh_data();
+			//refresh_data();
 			
 			$.ajax({
 				  url: '${pageContext.request.contextPath}/stock/ucdlist',

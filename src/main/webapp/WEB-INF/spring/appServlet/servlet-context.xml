@@ -25,8 +25,11 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<context:annotation-config />
 	<context:component-scan base-package="fnguide.index.monitoring.controller" />
-	<context:component-scan base-package="fnguide.index.monitoring" />
+	<context:component-scan base-package="fnguide.index.monitoring.bond" />
+	<context:component-scan base-package="fnguide.index.monitoring.stock" />
+	<context:component-scan base-package="fnguide.index.monitoring.simul" />
 	
 	<mvc:default-servlet-handler/>
 	

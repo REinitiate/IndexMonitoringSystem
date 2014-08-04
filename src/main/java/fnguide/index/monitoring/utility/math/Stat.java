@@ -140,7 +140,7 @@ public class Stat
     	Double[] residual = new Double[size];
     	
     	for(int i=0; i<size; i++){
-    		residual[i] = yield_market[i] - (beta * (yield[i] - rf[i]) + rf[i]);
+    		residual[i] = yield[i] - (beta * (yield_market[i] - rf[i]) + rf[i]);
     	}
     	return Stat.GetAvg(residual); // 월별
     }
@@ -151,7 +151,7 @@ public class Stat
     	Double[] residual = new Double[size];
     	
     	for(int i=0; i<size; i++){
-    		residual[i] = yield_market[i] - (beta * (yield[i] - rf[i]) + rf[i]);
+    		residual[i] = yield[i] - (beta * (yield_market[i] - rf[i]) + rf[i]);
     	}
     	return Stat.GetStd(residual); // 월별
     }
