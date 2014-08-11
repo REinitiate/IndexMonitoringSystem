@@ -50,13 +50,7 @@ public class DashBoardController {
 		else{
 			model.addAttribute("dt", dt);
 			req.getSession().setAttribute("dt", dt);
-		}
-		
-		
-		HashMap<String, String> input = new HashMap<String, String>();		
-		input.put("gicode", "A005930");
-		
-		List<HashMap<String, Object>> outputs = sqlSession.selectList("BondQueryMapper.selectSample" , input);
+		}		
 		
 		model.addAttribute("type", "url");
 		model.addAttribute("contents", "contents/dashboard.jsp");

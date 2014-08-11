@@ -39,7 +39,7 @@
                         <!-- /input-group -->
                     </li>
                 	                                    
-                    <li class="disabled">
+                    <li>
                         <a href="javascript:action_menu('/dashboard')"><i class="fa fa-dashboard fa-fw"></i> DASH BOARD</a>
                     </li>
                                         
