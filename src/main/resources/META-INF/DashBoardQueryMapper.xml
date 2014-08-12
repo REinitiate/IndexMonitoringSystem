@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="DashBoardQueryMapper">
+	
+	<select id="selectEventItem" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[SELECT A.U_CD U_CD, G.U_NM U_NM, A.GICODE GICODE, B.ITEMABBRNM ITEMABBRNM, E.CD_NM CD_NM1, C.STK STK1, F.CD_NM CD_NM2, D.STK STK2
+				FROM(
+				SELECT U_CD, GICODE, INDEX_STK_QTY
+				FROM JISUDEV.FNI_MFI_U_MAP_HIST
+				WHERE TRD_DT = #{t1}
+				MINUS
+				SELECT U_CD, GICODE, INDEX_STK_QTY
+				FROM JISUDEV.FNI_MFI_U_MAP_HIST
+				WHERE TRD_DT = #{t0}
+				) A, FNS_J_MAST B,
+				(SELECT DISTINCT GICODE, SUM(CHG_STK_QTY) OVER (PARTITION BY GICODE) STK, INCREASE_CAP_CD CD FROM FNI_DISCLOS WHERE NEW_STK_LIST_DT = #{t1}) C, 
+				(SELECT DISTINCT GICODE, SUM(CHG_STK_QTY) OVER (PARTITION BY GICODE) STK, INCREASE_CAP_CD CD FROM FNI_DISCLOS WHERE RIGHT_OFF_DT = #{t1}) D,
+				(SELECT CD, CD_NM
+				FROM FNC_GRP_CD_DETAIL
+				WHERE GRP_CD = 'CP10') E,
+				(SELECT CD, CD_NM
+				FROM FNC_GRP_CD_DETAIL
+				WHERE GRP_CD = 'CP10') F,
+				FNS_U_MAST G
+				WHERE A.GICODE = B.GICODE
+				AND A.GICODE = C.GICODE(+)
+				AND A.GICODE = D.GICODE(+)
+				AND C.CD = E.CD(+) 
+				AND D.CD = F.CD(+)
+				AND A.U_CD = G.U_CD(+)
+				ORDER BY GICODE DESC]]>
+	</select>
+	
+	<select id="selectTrdDtPday" parameterType="String" resultType="String">
+		<![CDATA[
+		SELECT TRD_DT_PDAY
+		FROM FNC_CALENDAR A
+		WHERE A.TRD_DT = #{dt}
+		]]>
+	</select>
+	
+</mapper>

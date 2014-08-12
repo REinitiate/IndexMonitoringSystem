@@ -10,5 +10,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<mapper resource="META-INF/StockProfileQueryMapper.xml"/>
 		<mapper resource="META-INF/SimulProfileQueryMapper.xml"/>
 		<mapper resource="META-INF/SimulQueryMapper.xml"/>
+		<mapper resource="META-INF/DashBoardQueryMapper.xml"/>
 	</mappers>
 </configuration>

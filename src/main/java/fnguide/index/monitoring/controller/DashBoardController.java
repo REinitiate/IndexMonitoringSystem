@@ -16,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import fnguide.index.monitoring.dashboard.DashBoardService;
+
 /**
  * Handles requests for the application home page.
  */
@@ -30,6 +32,9 @@ public class DashBoardController {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	@Autowired
+	private DashBoardService dashBoardService;
+	
 	@RequestMapping(value = "/dashboard")
 	public String home(@RequestParam(required=false) String dt, HttpServletRequest req, Model model) {
 		
@@ -41,6 +46,7 @@ public class DashBoardController {
 				String today = (new SimpleDateFormat("yyyyMMdd")).format(new Date());
 				model.addAttribute("dt", today);
 				req.getSession().setAttribute("dt", today);
+				dt = today;
 			}
 			else{
 				model.addAttribute("dt", dt);
@@ -50,8 +56,9 @@ public class DashBoardController {
 		else{
 			model.addAttribute("dt", dt);
 			req.getSession().setAttribute("dt", dt);
-		}		
+		}
 		
+		model.addAttribute("events",dashBoardService.GetEventItem(dt));
 		model.addAttribute("type", "url");
 		model.addAttribute("contents", "contents/dashboard.jsp");
 		

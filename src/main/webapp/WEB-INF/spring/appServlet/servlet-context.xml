@@ -30,6 +30,7 @@
 	<context:component-scan base-package="fnguide.index.monitoring.bond" />
 	<context:component-scan base-package="fnguide.index.monitoring.stock" />
 	<context:component-scan base-package="fnguide.index.monitoring.simul" />
+	<context:component-scan base-package="fnguide.index.monitoring.dashboard" />
 	
 	<mvc:default-servlet-handler/>
 	
