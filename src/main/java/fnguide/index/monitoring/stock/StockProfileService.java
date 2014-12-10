@@ -12,7 +12,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fnguide.index.monitoring.utility.Converter;
+import fnguide.index.monitoring.utility.conv;
 import fnguide.index.monitoring.utility.Ut;
 import fnguide.index.monitoring.utility.math.Stat;
 import fnguide.index.monitoring.utility.math.Stat.FreqType;
@@ -193,11 +193,11 @@ public class StockProfileService extends SqlSessionDaoSupport {
 		Double[] clsPrcBm = (Double[])timeSeriesData.get("CLS_PRC_BM");		
 		for(int i=0; i<dateList.length; i++){
 			Object[] data = new Object[2];
-			data[0] = Converter.GetUtc(dateList[i]);
+			data[0] = conv.GetUtc(dateList[i]);
 			data[1] = clsPrc[i];
 			
 			Object[] data2 = new Object[2];
-			data2[0] = Converter.GetUtc(dateList[i]);
+			data2[0] = conv.GetUtc(dateList[i]);
 			data2[1] = clsPrcBm[i];
 			
 			source.add(data);
@@ -208,8 +208,8 @@ public class StockProfileService extends SqlSessionDaoSupport {
 		result.put("SERIES2", source2);
 		result.put("지수이름", stockCommonService.GetUnmByUcd(u_cd));
 		result.put("벤치마크이름", stockCommonService.GetUnmByUcd(u_cd_bm));
-		result.put("T0", Converter.Date2Date(t0, "/"));
-		result.put("T1", Converter.Date2Date(t1, "/"));
+		result.put("T0", conv.Date2Date(t0, "/"));
+		result.put("T1", conv.Date2Date(t1, "/"));
 				
 		return result;
 	}
@@ -309,8 +309,8 @@ public class StockProfileService extends SqlSessionDaoSupport {
 		Double[] idxListBm = new Double[dbOutput.size()];
 		
 		for(int i=0; i<dbOutput.size(); i++){
-			idxList[i] = Converter.BigDecimal2Double(dbOutput.get(i).get("CLS_PRC"));
-			idxListBm[i] = Converter.BigDecimal2Double(dbOutput.get(i).get("CLS_PRC_BM"));
+			idxList[i] = conv.BigDecimal2Double(dbOutput.get(i).get("CLS_PRC"));
+			idxListBm[i] = conv.BigDecimal2Double(dbOutput.get(i).get("CLS_PRC_BM"));
 		}
 		
 		result.add(idxList);
@@ -348,11 +348,11 @@ public class StockProfileService extends SqlSessionDaoSupport {
 		
 		for(int i=0; i<dbOutput.size(); i++){
 			dateList[i] = (String)dbOutput.get(i).get("YMD");
-			clsPrcList[i] = Converter.BigDecimal2Double(dbOutput.get(i).get("CLS_PRC"));
-			yieldList[i] = Converter.BigDecimal2Double(dbOutput.get(i).get("YIELD"));
-			clsPrcBmList[i] = Converter.BigDecimal2Double(dbOutput.get(i).get("CLS_PRC_BM"));
-			yieldBmList[i] = Converter.BigDecimal2Double(dbOutput.get(i).get("YIELD_BM"));
-			riskFreeRateList[i] = Converter.BigDecimal2Double(dbOutput.get(i).get("RF"));
+			clsPrcList[i] = conv.BigDecimal2Double(dbOutput.get(i).get("CLS_PRC"));
+			yieldList[i] = conv.BigDecimal2Double(dbOutput.get(i).get("YIELD"));
+			clsPrcBmList[i] = conv.BigDecimal2Double(dbOutput.get(i).get("CLS_PRC_BM"));
+			yieldBmList[i] = conv.BigDecimal2Double(dbOutput.get(i).get("YIELD_BM"));
+			riskFreeRateList[i] = conv.BigDecimal2Double(dbOutput.get(i).get("RF"));
 		}
 		
 		result.put("DATE", dateList);

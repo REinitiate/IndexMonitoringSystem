@@ -9,7 +9,7 @@ import java.util.TimeZone;
 
 
 
-public class Converter {
+public class conv {
 	public static Long GetUtc(String dt){		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		Calendar cal = new GregorianCalendar();
@@ -34,6 +34,9 @@ public class Converter {
 	 * @return Double로 변경된 입력값.
 	 */
 	public static Double BigDecimal2Double(Object input){
-		return ((BigDecimal)input).doubleValue();
+		if(input != null)
+			return ((BigDecimal)input).doubleValue();
+		else
+			return 0.0;
 	}
 }

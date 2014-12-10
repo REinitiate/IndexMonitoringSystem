@@ -29,13 +29,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import fnguide.index.monitoring.stock.StockCommonService;
 import fnguide.index.monitoring.stock.StockConstService;
 import fnguide.index.monitoring.stock.StockProfileService;
 import fnguide.index.monitoring.stock.StockConstService.PriceType;
 import fnguide.index.monitoring.stock.StockConstService.UnivType;
 import fnguide.index.monitoring.stock.StockProfileService.IntervalType;
 import fnguide.index.monitoring.stock.StockService;
-import fnguide.index.monitoring.utility.Converter;
+import fnguide.index.monitoring.utility.conv;
 import fnguide.index.monitoring.utility.Ut;
 
 @Controller
@@ -51,9 +52,16 @@ public class StockController {
 	@Autowired
 	public StockProfileService stockProfileService;
 	
+	@Autowired
+	public StockCommonService stockCommonService;
+	
 	@RequestMapping(value = "/stock/constitution", method={RequestMethod.GET, RequestMethod.POST})	
 	public String GetIndexConstitution(@RequestParam(required=false) String dt, String cd, HttpServletRequest req, Model model) {
-				
+		
+		String today = Ut.date2str(new Date());
+		String pday = stockCommonService.GetPDay(today);				
+		
+		model.addAttribute("dt", pday);
 		model.addAttribute("type", "url");
 		model.addAttribute("contents", "contents_stock/constitution.jsp");
 		model.addAttribute("service", "/stock/constitution");		
@@ -63,6 +71,7 @@ public class StockController {
 	@RequestMapping(value = "/stock/constitution/json", method=RequestMethod.POST, produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String GetConstitutionInfo(@RequestParam(required=false) String u_cd, String dt_univ, String dt_prc, String dt_stk, String prc_type, String univ_type, HttpServletRequest req, Model model) {		
+			
 		
 		String result = null;
 		if(prc_type.compareTo("cls_prc") == 0){

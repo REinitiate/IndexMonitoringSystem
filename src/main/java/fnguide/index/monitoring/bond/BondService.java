@@ -11,7 +11,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fnguide.index.monitoring.utility.Converter;
+import fnguide.index.monitoring.utility.conv;
 import fnguide.index.monitoring.utility.Ut;
 
 @Service
@@ -89,9 +89,9 @@ public class BondService {
 		
 		for(int i=0; i<outItemHist.size(); i++){
 			if(((String)outItemHist.get(i).get("최근이자지급일")).compareTo("할인채") != 0){
-				outItemHist.get(i).put("최근이자지급일", Converter.Date2Date((String)outItemHist.get(i).get("최근이자지급일"), "/"));
+				outItemHist.get(i).put("최근이자지급일", conv.Date2Date((String)outItemHist.get(i).get("최근이자지급일"), "/"));
 			}
-			outItemHist.get(i).put("만기일", Converter.Date2Date((String)outItemHist.get(i).get("만기일"), "/"));
+			outItemHist.get(i).put("만기일", conv.Date2Date((String)outItemHist.get(i).get("만기일"), "/"));
 		}
 		
 		return outItemHist;
@@ -127,7 +127,7 @@ public class BondService {
 		sb.append("[");
 		for(int i=0; i<outIdxDl.size(); i++){
 			sb.append("[");
-			sb.append(Converter.GetUtc(outIdxDl.get(i).get("TRD_DT").toString()));			
+			sb.append(conv.GetUtc(outIdxDl.get(i).get("TRD_DT").toString()));			
 			sb.append(",");			
 			sb.append(outIdxDl.get(i).get("CLS_PRC").toString());
 			sb.append("]");

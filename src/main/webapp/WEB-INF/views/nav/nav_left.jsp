@@ -13,7 +13,7 @@
                 <ul class="nav" id="side-menu">
                 
                 	<li style="text-align: center;">
-                		<a><input name="dt" type="text" id="datepicker"></a>
+                		<a><input name="dt" type="text" id="datepicker" style="text-align: center;"></a>
                 	</li>
                 	
                 	<li class="sidebar-search">
@@ -38,10 +38,22 @@
                         </div>                        
                         <!-- /input-group -->
                     </li>
-                	                                    
+                    
                     <li>
-                        <a href="javascript:action_menu('/dashboard')"><i class="fa fa-dashboard fa-fw"></i> DASH BOARD</a>
+                        
+                        <a href="javascript:action_menu('/board')"><i class="fa fa-calendar fa-fw"></i> 게시판</a>
+                            
                     </li>
+                    
+                    <li>
+                        <a href="#"><i class="fa fa-lemon-o  fa-fw"></i> 이벤트체크<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="javascript:action_menu('/index_stk')"><i class="fa fa-check-square-o fa-fw"></i> 지수채용주식수 체크</a>
+                            </li>                            
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>                               
                                         
                     <li>
                         <a href="#"><i class="fa fa-lemon-o  fa-fw"></i> 채권지수<span class="fa arrow"></span></a>
@@ -70,7 +82,11 @@
                                         
                     <li>
                         <a href="#"><i class="fa fa-lemon-o fa-fw"></i> 시뮬레이션 레포트<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">                            
+                        <ul class="nav nav-second-level">
+                        	<li>
+                                <a href="javascript:action_menu('/nps/profile')">국민연금
+                                </a>
+                            </li>                            
                             <li>
                                 <a href="javascript:action_menu('/simul/profile')">프로파일</a>
                             </li>

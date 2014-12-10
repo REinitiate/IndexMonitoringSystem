@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="NpsSimulProfileQueryMapper">
+
+	<select id="selectAfterMinDay" parameterType="String" resultType="String">
+		<![CDATA[SELECT MIN(TRD_DT) TRD_DT
+				 FROM FNC_CALENDAR
+				 WHERE TRD_DT >= #{dt}
+				 AND OPEN_GB_STOCK = '0'
+		]]>
+	</select>
+	
+	<select id="selectBeforeMaxDay" parameterType="String" resultType="String">
+		<![CDATA[SELECT MAX(TRD_DT) TRD_DT
+				 FROM FNC_CALENDAR
+				 WHERE TRD_DT <= #{dt}
+				 AND OPEN_GB_STOCK = '0'
+		]]>
+	</select>		
+	
+	<!-- 일별 수익률 -->
+	<select id="selectDailyTsWithBm" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[SELECT A.TRD_DT, A.CLS_PRC, A.CLS_PRC_BM, A.KOSPI, A.KOSPI100, A.KOSPI200, NVL(B.END_DT, 'X') W, NVL(C.END_DT, 'X') M
+				FROM
+				(SELECT A.STD_DT TRD_DT,
+				       A.CLS_PRC,
+				       B.CLS_PRC CLS_PRC_BM,
+				       KOSPI.CLS_PRC KOSPI,
+				       KOSPI100.CLS_PRC KOSPI100,
+				       KOSPI200.CLS_PRC KOSPI200
+				FROM JISUDEV.RES_STYLE_IDX A,
+				     FNS_UD B,
+				     FNS_UD KOSPI,
+				     FNS_UD KOSPI100,
+				     FNS_UD KOSPI200          
+				WHERE A.STD_DT = B.TRD_DT
+				AND A.SIMUL_ID = #{simul_id}
+				AND A.U_CD = #{u_cd}
+				AND A.STD_DT BETWEEN #{t0} AND #{t1}
+				AND B.U_CD = #{u_cd_bm}
+				AND B.TRD_DT = KOSPI.TRD_DT
+				AND B.TRD_DT = KOSPI100.TRD_DT
+				AND B.TRD_DT = KOSPI200.TRD_DT
+				AND KOSPI.U_CD = 'I.001'
+				AND KOSPI100.U_CD = 'I.111'
+				AND KOSPI200.U_CD = 'I.101' 
+				ORDER BY A.STD_DT ASC) A,
+				(SELECT END_DT
+				FROM FNS_UW
+				WHERE U_CD = 'I.001'
+				AND END_DT BETWEEN #{t0} AND #{t1}) B,
+				(SELECT END_DT
+				FROM FNS_UM
+				WHERE U_CD = 'I.001'
+				AND END_DT BETWEEN #{t0} AND #{t1}) C
+				WHERE A.TRD_DT = B.END_DT(+)
+				AND A.TRD_DT = C.END_DT(+)
+				ORDER BY A.TRD_DT ASC
+		]]>
+	</select>
+	
+	<!-- 주별 수익률 -->
+	<select id="selectWeeklyTsWithBm" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[
+			SELECT A.STD_DT TRD_DT, A.CLS_PRC, B.CLS_PRC CLS_PRC_BM
+			FROM JISUDEV.RES_STYLE_IDX A,
+			FNS_UD B,
+			FNS_UW D
+			WHERE A.STD_DT = B.TRD_DT
+			AND A.SIMUL_ID = #{simul_id}
+			AND A.U_CD = #{u_cd}
+			AND A.STD_DT BETWEEN #{t0} AND #{t1}
+			AND B.U_CD = #{u_cd_bm}
+			AND D.U_CD = 'I.001'
+			AND D.END_DT = A.STD_DT
+			ORDER BY A.STD_DT ASC
+		]]>
+	</select>
+	
+	<!-- 월별 수익률 -->
+	<select id="selectMonthlyTsWithBm" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[
+			SELECT A.STD_DT TRD_DT, A.CLS_PRC, B.CLS_PRC CLS_PRC_BM
+			FROM JISUDEV.RES_STYLE_IDX A,
+			FNS_UD B,
+			FNS_UM D
+			WHERE A.STD_DT = B.TRD_DT
+			AND A.SIMUL_ID = #{simul_id}
+			AND A.U_CD = #{u_cd}
+			AND A.STD_DT BETWEEN #{t0} AND #{t1}
+			AND B.U_CD = #{u_cd_bm}
+			AND D.U_CD = 'I.001'
+			AND D.END_DT = A.STD_DT
+			ORDER BY A.STD_DT ASC
+		]]>
+	</select>
+	
+	<!-- 개편 시점 가지고 오기 -->
+	<select id="selectRebalDt" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		<![CDATA[
+			SELECT DISTINCT START_DT
+			FROM JISUDEV.RES_STYLE_UNIV
+			WHERE SIMUL_ID = #{simul_id}
+			AND U_CD = #{u_cd}
+			ORDER BY START_DT ASC
+		]]>
+	</select>
+	
+	<!--  전 영업일 가지고 오기 -->
+	<select id="selectTrdDtPday" parameterType="String" resultType="String">
+		<![CDATA[
+			SELECT TRD_DT_PDAY
+			FROM FNC_CALENDAR
+			WHERE TRD_DT = #{dt}
+			AND OPEN_GB_STOCK = '0'
+		]]>
+	</select>
+	
+	<!--  전 영업일 가지고 오기 -->
+	<select id="selectNextDay" parameterType="String" resultType="String">
+		<![CDATA[
+			SELECT TRD_DT
+			FROM FNC_CALENDAR
+			WHERE TRD_DT_PDAY = #{dt}
+			AND OPEN_GB_STOCK = '0'
+		]]>
+	</select>
+	
+	
+	<!--  특정 시점의 종목 비중 (종가기준) -->
+	<select id="selectIndexWeightClsPrc" parameterType="HashMap" resultType="HashMap">
+		<![CDATA[
+			SELECT START_DT, GICODE, ITEMABBRNM, CAP / SUM(CAP) OVER (PARTITION BY START_DT) WEIGHT, TRD_AMT/100000000 TRD_AMT
+			FROM(
+			SELECT A.START_DT, A.GICODE, C.ITEMABBRNM, A.WEIGHT * B.STK_QTY * B.FF_RT_BAND * B.CLS_PRC CAP, D.TRD_AMT_AVG_120 TRD_AMT
+			FROM JISUDEV.RES_STYLE_UNIV A,
+			     JISUDEV.RES_J_MAST_HIST B,
+			     FNS_J_MAST_HIST C,
+			     FNS_JD D
+			WHERE A.SIMUL_ID = #{simul_id}
+			AND A.U_CD = #{u_cd}
+			AND A.START_DT = C.TRD_DT
+			AND A.GICODE = C.GICODE
+			AND B.TRD_DT = #{dt}
+			AND A.GICODE = B.GICODE
+			AND D.GICODE = A.GICODE
+			AND D.TRD_DT = A.START_DT
+			AND A.START_DT = (SELECT MAX(START_DT)
+			                  FROM JISUDEV.RES_STYLE_UNIV
+			                  WHERE SIMUL_ID = #{simul_id}
+			                  AND U_CD = #{u_cd}
+			                  AND START_DT <= #{dt})         
+			)
+		]]>
+	</select>
+	
+	<!--  특정 시점의 벤치마크 비중 (종가기준) -->
+	<select id="selectBmWeightClsPrc" parameterType="HashMap" resultType="HashMap">
+		<![CDATA[SELECT A.GICODE, CAP / SUM(CAP) OVER (PARTITION BY 1) WEIGHT
+				FROM
+				(
+				SELECT A.GICODE, B.STK_QTY * B.CLS_PRC CAP
+				FROM FNS_U_MAP_HIST A, JISUDEV.RES_J_MAST_HIST B
+				WHERE A.U_CD = 'I.202'
+				AND A.IN_OUT_GB IN ('0', '1', '3')
+				AND A.UPDATE_DT = (SELECT MAX(UPDATE_DT) FROM FNS_U_MAP_HIST WHERE U_CD = 'I.202' AND UPDATE_DT <= #{dt})
+				AND A.GICODE = B.GICODE
+				AND B.TRD_DT = #{dt}
+				UNION
+				SELECT A.GICODE, B.STK_QTY * B.CLS_PRC CAP
+				FROM FNS_U_MAP_HIST A, JISUDEV.RES_J_MAST_HIST B
+				WHERE A.U_CD = 'I.001'
+				AND A.IN_OUT_GB IN ('0', '1', '3')
+				AND A.UPDATE_DT = (SELECT MAX(UPDATE_DT) FROM FNS_U_MAP_HIST WHERE U_CD = 'I.001' AND UPDATE_DT <= #{dt})
+				AND A.GICODE = B.GICODE
+				AND B.TRD_DT = #{dt}
+				) A
+				ORDER BY CAP DESC			 
+		]]>
+	</select>
+	
+	<!--  특정 시점의 종목 비중 (시가기준) -->
+	<select id="selectIndexWeightStrtPrc" parameterType="HashMap" resultType="HashMap">
+		<![CDATA[
+			SELECT START_DT, GICODE, ITEMABBRNM, CAP / SUM(CAP) OVER (PARTITION BY START_DT) WEIGHT, TRD_AMT/100000000 TRD_AMT
+			FROM(
+			SELECT A.START_DT, A.GICODE, C.ITEMABBRNM, A.WEIGHT * B.STK_QTY * B.FF_RT_BAND * B.STRT_PRC CAP, D.TRD_AMT_AVG_120 TRD_AMT
+			FROM JISUDEV.RES_STYLE_UNIV A,
+			     JISUDEV.RES_J_MAST_HIST B,
+			     FNS_J_MAST_HIST C,
+			     FNS_JD D
+			WHERE A.SIMUL_ID = #{simul_id}
+			AND A.U_CD = #{u_cd}
+			AND A.START_DT = C.TRD_DT
+			AND A.GICODE = C.GICODE
+			AND B.TRD_DT = #{dt}
+			AND A.GICODE = B.GICODE
+			AND D.GICODE = A.GICODE
+			AND D.TRD_DT = A.START_DT
+			AND A.START_DT = (SELECT MAX(START_DT)
+			                  FROM JISUDEV.RES_STYLE_UNIV
+			                  WHERE SIMUL_ID = #{simul_id}
+			                  AND U_CD = #{u_cd}
+			                  AND START_DT <= #{dt})         
+			)
+		]]>
+	</select>	
+	
+	
+	<!--  연말 일자 가지고 오기 -->
+	<select id="selectLastDayInYear" parameterType="HashMap" resultType="HashMap">
+		<![CDATA[
+			SELECT SUBSTR(A.TRD_DT, 1, 4), MIN(A.TRD_DT) MIN, MAX(A.TRD_DT) MAX
+			FROM FNC_CALENDAR A
+			WHERE A.OPEN_GB_STOCK = '0'
+			AND A.TRD_DT BETWEEN #{t0} AND #{t1}
+			GROUP BY SUBSTR(A.TRD_DT, 1, 4)
+			ORDER BY SUBSTR(A.TRD_DT, 1, 4) ASC
+		]]>
+	</select>
+	
+</mapper>

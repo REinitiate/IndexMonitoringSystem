@@ -98,4 +98,4 @@
     <script src="${pageContext.request.contextPath}/resources/js/modules/bootstrap3-typeahead.js"></script>
     
     <!-- Copy to clipboard module -->
-    <script src="${pageContext.request.contextPath}/resources/js/ZeroClipboard.js"></script>		
+    <script src="${pageContext.request.contextPath}/resources/js/ZeroClipboard.js"></script>

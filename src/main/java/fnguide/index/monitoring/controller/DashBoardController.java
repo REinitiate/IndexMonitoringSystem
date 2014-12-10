@@ -35,7 +35,7 @@ public class DashBoardController {
 	@Autowired
 	private DashBoardService dashBoardService;
 	
-	@RequestMapping(value = "/dashboard")
+	@RequestMapping(value = "/index_stk")
 	public String home(@RequestParam(required=false) String dt, HttpServletRequest req, Model model) {
 		
 		logger.info("root 경로로 접속했을 시!"); 
@@ -60,7 +60,37 @@ public class DashBoardController {
 		
 		model.addAttribute("events",dashBoardService.GetEventItem(dt));
 		model.addAttribute("type", "url");
-		model.addAttribute("contents", "contents/dashboard.jsp");
+		model.addAttribute("contents", "contents/index_stk.jsp");
+		
+		return "template";
+	}
+	
+	@RequestMapping(value = "/board")
+	public String board(@RequestParam(required=false) String dt, HttpServletRequest req, Model model) {
+		
+		logger.info("root 경로로 접속했을 시!"); 
+		
+		if(dt == null){
+			dt = (String)req.getSession().getAttribute("dt");
+			if(dt == null){ // 세션에 없을 시
+				String today = (new SimpleDateFormat("yyyyMMdd")).format(new Date());
+				model.addAttribute("dt", today);
+				req.getSession().setAttribute("dt", today);
+				dt = today;
+			}
+			else{
+				model.addAttribute("dt", dt);
+				req.getSession().setAttribute("dt", dt);
+			}
+		}
+		else{
+			model.addAttribute("dt", dt);
+			req.getSession().setAttribute("dt", dt);
+		}
+		
+		//model.addAttribute("events",dashBoardService.GetEventItem(dt));
+		model.addAttribute("type", "url");
+		model.addAttribute("contents", "contents/board.jsp");
 		
 		return "template";
 	}

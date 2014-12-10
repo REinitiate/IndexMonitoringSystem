@@ -9,4 +9,8 @@ public class StockCommonService extends SqlSessionDaoSupport{
 		String u_nm = (String) getSqlSession().selectOne("StockConstitutionQueryMapper.selectUnmWithUcd", u_cd);		
 		return u_nm;
 	}
+	
+	public String GetPDay(String dt){
+		return (String) getSqlSession().selectOne("common.selectPday", dt);		 
+	}
 }

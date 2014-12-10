@@ -90,9 +90,11 @@
 			initialize_copy_module();
 			
 			// 인풋 초기화
-			$('#dt_univ').val('20140709');			
-			$('#dt_prc').val('20140709');
-			$('#dt_stk').val('20140709');
+			date = new Date();
+						
+			$('#dt_univ').val(${dt});			
+			$('#dt_prc').val(${dt});
+			$('#dt_stk').val(${dt});
 			$('#index_search').val('FI00(MKF500)');
 			$('#input_prc_type').val('종가기준');
 			$('#input_univ_type').val('FNI_MFI_U_MAP_HIST');
@@ -250,8 +252,7 @@
 	            }
 			});
 		}
-	</script>
-    
+	</script> 
 
     
     
